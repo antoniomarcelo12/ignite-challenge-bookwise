@@ -1,9 +1,10 @@
 'use client'
-import { BookOpen, Bookmarks, MagnifyingGlass, User } from 'phosphor-react'
+import { BookOpen, Bookmarks, User } from 'phosphor-react'
 import { Sidebar } from '../components/Sidebar'
 import Image from 'next/image'
 import profilePic from '../../assets/profile.jpeg'
 import { RatingBookItem } from '../home/RatingBookItem'
+import { Input } from '../components/Input'
 
 export default function Profile() {
   return (
@@ -14,13 +15,7 @@ export default function Profile() {
           <h1 className="mb-14 flex items-center text-gray-100 text-3xl gap-3">
             <User color="#50B2C0" /> Perfil
           </h1>
-          <div className="flex w-full px-5 py-4 items-center border-gray-500 border-2 mb-10">
-            <input
-              className="w-full bg-transparent focus:outline-none"
-              placeholder="Buscar livro avaliado"
-            />
-            <MagnifyingGlass size={20} />
-          </div>
+          <Input placeholder="Buscar livro avaliado" />
         </div>
         <div className="space-y-3">
           <RatingBookItem />

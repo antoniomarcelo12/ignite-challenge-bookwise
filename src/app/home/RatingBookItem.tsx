@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import pic from '../../assets/profile.jpeg'
 import book from '../../assets/book.png'
-import { Star } from 'phosphor-react'
+import { Stars } from '../components/Stars'
 
 export function RatingBookItem() {
   return (
@@ -16,13 +16,7 @@ export function RatingBookItem() {
             <p className="text-gray-400">Hoje</p>
           </div>
         </div>
-        <div className="flex items-center">
-          <Star className="h-4 w-4 text-purple-500" weight="fill" />
-          <Star className="h-4 w-4 text-purple-500" weight="fill" />
-          <Star className="h-4 w-4 text-purple-500" weight="fill" />
-          <Star className="h-4 w-4 text-purple-500" weight="fill" />
-          <Star className="h-4 w-4" />
-        </div>
+        <Stars />
       </div>
       <div id="content" className="flex gap-4">
         <Image
