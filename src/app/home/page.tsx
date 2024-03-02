@@ -10,7 +10,7 @@ export default function Home() {
       <div id="main" className="max-h-full">
         <div className="mt-24">
           <h1 className="mb-14 flex items-center text-gray-100 text-3xl gap-3 font-bold">
-            <ChartLineUp color="#50B2C0" /> Início
+            <ChartLineUp className="text-appGreen100" /> Início
           </h1>
           <p className="mb-6">Avaliações mais recentes</p>
         </div>

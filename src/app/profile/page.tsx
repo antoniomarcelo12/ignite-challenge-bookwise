@@ -1,6 +1,5 @@
 'use client'
 import { BookOpen, Bookmarks, User } from 'phosphor-react'
-import { Sidebar } from '../components/Sidebar'
 import Image from 'next/image'
 import profilePic from '../../assets/profile.jpeg'
 import { RatingBookItem } from '../home/RatingBookItem'
@@ -11,8 +10,8 @@ export default function Profile() {
     <div className="flex gap-44 h-screen p-3">
       <div id="main" className="max-h-full">
         <div className="mt-24">
-          <h1 className="mb-14 flex items-center text-gray-100 text-3xl gap-3">
-            <User color="#50B2C0" /> Perfil
+          <h1 className="mb-14 flex items-center text-gray-100 gap-3 text-3xl font-bold">
+            <User className="text-appGreen100" /> Perfil
           </h1>
           <Input placeholder="Buscar livro avaliado" />
         </div>

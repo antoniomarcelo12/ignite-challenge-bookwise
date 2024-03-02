@@ -1,9 +1,14 @@
 'use client'
-import { Inter } from 'next/font/google'
+import { Inter as FontSans } from 'next/font/google'
 import './globals.css'
 import { Sidebar } from './components/Sidebar'
 
-const inter = Inter({ subsets: ['latin'] })
+import { cn } from '../lib/utils'
+
+export const fontSans = FontSans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+})
 
 export default function RootLayout({
   children,
@@ -12,7 +17,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body
+        className={cn(
+          'min-h-screen bg-background font-sans antialiased dark',
+          fontSans.variable,
+        )}
+      >
         <div className="p-3 flex max-w-screen h-screen gap-20">
           <Sidebar />
           {children}

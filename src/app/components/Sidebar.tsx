@@ -30,7 +30,8 @@ export function Sidebar() {
       </div>
 
       <button className="font-bold mt-auto flex items-center gap-4 mb-4">
-        Fazer login <SignIn color="#50B2C0" height={24} width={24} />
+        Fazer login{' '}
+        <SignIn className="text-appGreen100" height={24} width={24} />
       </button>
     </div>
   )
