@@ -9,7 +9,6 @@ import { Input } from '../components/Input'
 export default function Profile() {
   return (
     <div className="flex gap-44 h-screen p-3">
-      <Sidebar />
       <div id="main" className="max-h-full">
         <div className="mt-24">
           <h1 className="mb-14 flex items-center text-gray-100 text-3xl gap-3">

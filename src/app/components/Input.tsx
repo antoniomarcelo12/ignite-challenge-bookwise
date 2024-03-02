@@ -1,6 +1,7 @@
 import { MagnifyingGlass } from 'phosphor-react'
+import { ComponentProps } from 'react'
 
-interface InputProps {
+interface InputProps extends ComponentProps<'input'> {
   placeholder?: string
 }
 

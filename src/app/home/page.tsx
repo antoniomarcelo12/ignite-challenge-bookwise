@@ -2,16 +2,14 @@
 
 import { ChartLineUp } from 'phosphor-react'
 import { RatingBookItem } from './RatingBookItem'
-import { Sidebar } from '../components/Sidebar'
 import { PopularBooks } from './PopularBooks'
 
 export default function Home() {
   return (
-    <div className="flex h-screen p-3 gap-44 overflow-auto">
-      <Sidebar />
+    <div className="flex gap-44">
       <div id="main" className="max-h-full">
         <div className="mt-24">
-          <h1 className="mb-14 flex items-center text-gray-100 text-3xl gap-3">
+          <h1 className="mb-14 flex items-center text-gray-100 text-3xl gap-3 font-bold">
             <ChartLineUp color="#50B2C0" /> Início
           </h1>
           <p className="mb-6">Avaliações mais recentes</p>
