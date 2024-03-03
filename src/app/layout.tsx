@@ -4,6 +4,7 @@ import './globals.css'
 import { Sidebar } from './components/Sidebar'
 
 import { cn } from '../lib/utils'
+import { usePathname } from 'next/navigation'
 
 export const fontSans = FontSans({
   subsets: ['latin'],
@@ -15,16 +16,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const location = usePathname()
   return (
     <html lang="en">
       <body
         className={cn(
-          'min-h-screen bg-background font-sans antialiased dark',
+          ' bg-background font-sans antialiased dark',
           fontSans.variable,
         )}
       >
         <div className="p-3 flex max-w-screen h-screen gap-20">
-          <Sidebar />
+          {location !== '/login' && <Sidebar />}
+
           {children}
         </div>
       </body>

@@ -14,7 +14,7 @@ export default function Login() {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[700px_1fr]">
+    <div className="grid grid-cols-1 lg:grid-cols-[700px_1fr] gap-96 max-h-screen overflow-hidden">
       <div className="p-5 object-fill">
         <Image src={loginPageImage} alt="" height={912} width={598} />
       </div>
