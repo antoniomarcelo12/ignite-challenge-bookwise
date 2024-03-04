@@ -1,16 +1,55 @@
 'use client'
 import Image from 'next/image'
+import { unstable_getServerSession } from 'next-auth/next'
+import { authOptions } from '..'
+
 import loginPageImage from '../../assets/login-page-image.png'
 import { GithubLogo, GoogleLogo, Rocket } from 'phosphor-react'
 import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 
 export default function Login() {
   const router = useRouter()
-  function handleGoogleSignin() {
-    router.push('/home')
+  async function handleGoogleSignin() {
+    // router.push('/home')
+    try {
+      await signIn('google')
+      router.push('/home')
+    } catch (err) {
+      window.alert('erro.')
+    }
   }
+
   function handleGithubSignin() {
     router.push('/home')
+  }
+
+  const popupCenter = (url: string, title: string) => {
+    const dualScreenLeft = window.screenLeft ?? window.screenX
+    const dualScreenTop = window.screenTop ?? window.screenY
+
+    const width =
+      window.innerWidth ?? document.documentElement.clientWidth ?? screen.width
+
+    const height =
+      window.innerHeight ??
+      document.documentElement.clientHeight ??
+      screen.height
+
+    const systemZoom = width / window.screen.availWidth
+
+    const left = (width - 500) / 2 / systemZoom + dualScreenLeft
+    const top = (height - 550) / 2 / systemZoom + dualScreenTop
+
+    const newWindow = window.open(
+      url,
+      title,
+      `width=${500 / systemZoom},height=${
+        550 / systemZoom
+      },top=${top},left=${left}`,
+    )
+
+    newWindow?.focus()
   }
 
   return (
@@ -26,14 +65,14 @@ export default function Login() {
           </div>
           <div className="flex flex-col gap-2">
             <button
-              onClick={handleGoogleSignin}
+              onClick={() => popupCenter('/login/google', 'Google login')}
               className="flex items-center p-4 gap-4 bg-slate-800 h-16 rounded-lg font-bold"
             >
               <GoogleLogo className="h-6 w-6" />
               Entrar com Google
             </button>
             <button
-              onClick={handleGithubSignin}
+              onClick={() => popupCenter('/login/github', 'Github login')}
               className="flex items-center p-4 gap-4 bg-slate-800 h-16 rounded-lg font-bold"
             >
               <GithubLogo className="h-6 w-6" />
@@ -48,4 +87,16 @@ export default function Login() {
       </div>
     </div>
   )
+}
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      session: await unstable_getServerSession(
+        context.req,
+        context.res,
+        authOptions,
+      ),
+    },
+  }
 }

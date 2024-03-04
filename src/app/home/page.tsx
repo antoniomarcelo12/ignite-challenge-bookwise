@@ -12,9 +12,9 @@ export default function Home() {
           <h1 className="mb-14 flex items-center text-gray-100 text-3xl gap-3 font-bold">
             <ChartLineUp className="text-appGreen100" /> Início
           </h1>
-          <p className="mb-6">Avaliações mais recentes</p>
         </div>
         <div className="space-y-3">
+          <p className="mb-6">Avaliações mais recentes</p>
           <RatingBookItem />
           <RatingBookItem />
           <RatingBookItem />

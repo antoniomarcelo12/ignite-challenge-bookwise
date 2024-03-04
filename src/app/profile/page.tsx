@@ -7,7 +7,7 @@ import { Input } from '../components/Input'
 
 export default function Profile() {
   return (
-    <div className="flex gap-44 h-screen p-3">
+    <div className="flex gap-44 h-screen">
       <div id="main" className="max-h-full">
         <div className="mt-24">
           <h1 className="mb-14 flex items-center text-gray-100 gap-3 text-3xl font-bold">
@@ -16,10 +16,10 @@ export default function Profile() {
           <Input placeholder="Buscar livro avaliado" />
         </div>
         <div className="space-y-3">
-          <RatingBookItem />
-          <RatingBookItem />
-          <RatingBookItem />
-          <RatingBookItem />
+          <RatingBookItem isProfilePage={true} />
+          <RatingBookItem isProfilePage={true} />
+          <RatingBookItem isProfilePage={true} />
+          <RatingBookItem isProfilePage={true} />
         </div>
       </div>
       <div className="flex flex-col w-[324px] mt-48 border-l-[1px] max-h-screen px-10 border-gray-700">

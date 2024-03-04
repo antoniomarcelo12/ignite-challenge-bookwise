@@ -23,7 +23,8 @@ export function SheetComponent({
   const session = null
   function handleCreateNewComment() {
     if (!session) {
-      onLoginDialogOpenChange(true)
+      // onLoginDialogOpenChange(true)
+      setIsNewCommentBoxVisible(!isNewCommentBoxVisible)
     }
   }
 
@@ -76,13 +77,18 @@ export function SheetComponent({
               Avaliar
             </button>
           </div>
-          {isNewCommentBoxVisible && <NewCommentBox />}
+          {isNewCommentBoxVisible && (
+            <NewCommentBox
+              setIsNewCommentBoxVisible={setIsNewCommentBoxVisible}
+            />
+          )}
 
           <CommentItem />
           <CommentItem />
           <CommentItem />
         </div>
         <LoginDialog
+          setIsNewCommentBoxVisible={setIsNewCommentBoxVisible}
           isLoginDialogOpen={isLoginDialogOpen}
           onLoginDialogOpenChange={onLoginDialogOpenChange}
         />

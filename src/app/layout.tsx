@@ -5,6 +5,7 @@ import { Sidebar } from './components/Sidebar'
 
 import { cn } from '../lib/utils'
 import { usePathname } from 'next/navigation'
+import SessionWrapper from './components/auth/SessionProvider'
 
 export const fontSans = FontSans({
   subsets: ['latin'],
@@ -25,11 +26,13 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <div className="p-3 flex max-w-screen h-screen gap-20">
-          {location !== '/login' && <Sidebar />}
+        <SessionWrapper>
+          <div className="p-3 flex max-w-screen h-screen gap-20">
+            {location !== '/login' && <Sidebar />}
 
-          {children}
-        </div>
+            {children}
+          </div>
+        </SessionWrapper>
       </body>
     </html>
   )

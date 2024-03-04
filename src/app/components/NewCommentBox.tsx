@@ -3,7 +3,13 @@ import profilePic from '../../assets/profile.jpeg'
 import { Stars } from './Stars'
 import { Check, X } from 'phosphor-react'
 
-export function NewCommentBox() {
+interface NewCommentBoxProps {
+  setIsNewCommentBoxVisible: (status: boolean) => void
+}
+
+export function NewCommentBox({
+  setIsNewCommentBoxVisible,
+}: NewCommentBoxProps) {
   return (
     <div className="flex flex-col bg-slate-800 p-4 gap-3 rounded-md mt-2">
       <div className="flex justify-between">
@@ -20,7 +26,10 @@ export function NewCommentBox() {
         placeholder="Escreva sua avaliação"
       />
       <div className="ml-auto flex gap-2">
-        <button className="w-10 h-10 flex justify-center items-center border bg-gray-700 rounded-md">
+        <button
+          onClick={() => setIsNewCommentBoxVisible(false)}
+          className="w-10 h-10 flex justify-center items-center border bg-gray-700 rounded-md"
+        >
           <X />
         </button>
         <button className="w-10 h-10 flex justify-center items-center outline-1 border bg-gray-700 rounded-md">

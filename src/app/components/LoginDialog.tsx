@@ -5,6 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { signIn } from 'next-auth/react'
 import { GithubLogo, GoogleLogo } from 'phosphor-react'
 
 interface LoginDialogProps {
@@ -25,7 +26,10 @@ export function LoginDialog({
           </DialogTitle>
         </DialogHeader>
         <DialogDescription className="flex flex-col w-[70%] gap-4 mt-5">
-          <button className="flex items-center h-[72px] bg-slate-700 text-gray-100 text-lg p-4 gap-3 rounded-lg">
+          <button
+            onClick={() => signIn('google')}
+            className="flex items-center h-[72px] bg-slate-700 text-gray-100 text-lg p-4 gap-3 rounded-lg"
+          >
             <GoogleLogo size={32} /> Entrar com Google
           </button>
           <button className="flex items-center h-[72px] bg-slate-700 text-gray-100 text-lg p-4 gap-3 rounded-lg">

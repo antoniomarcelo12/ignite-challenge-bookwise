@@ -1,7 +1,6 @@
 'use client'
 import { Binoculars } from 'phosphor-react'
 import { ExploreBookItem } from './ExploreBookItem'
-import { Input } from '../components/Input'
 import { SheetComponent } from '../components/SheetComponent'
 import { useState } from 'react'
 
@@ -10,12 +9,11 @@ export default function Explore() {
 
   return (
     <div className="w-[1327px]">
-      <div className=" mt-24 flex justify-between items-center">
-        <h1 className="mb-14 flex items-center text-gray-100 text-3xl gap-3 font-bold">
-          <Binoculars className="text-appGreen100" /> Explorar
-        </h1>
-        <div>
-          <Input placeholder="Buscar livro ou autor" className="w-96" />
+      <div className="flex justify-between items-center">
+        <div className="mt-24">
+          <h1 className="mb-14 flex items-center text-gray-100 text-3xl gap-3 font-bold">
+            <Binoculars className="text-appGreen100" /> Explorar
+          </h1>
         </div>
       </div>
       <div className="">
