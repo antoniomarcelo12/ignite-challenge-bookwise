@@ -10,7 +10,7 @@ export function PopularBooks() {
           Ver todos <CaretCircleRight size={16} weight="fill" />
         </button>
       </div>
-      <div className="space-y-3">
+      <div className="flex flex-col gap-3">
         <PopularBooksItem />
         <PopularBooksItem />
         <PopularBooksItem />

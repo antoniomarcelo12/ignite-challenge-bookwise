@@ -18,6 +18,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   const location = usePathname()
+
   return (
     <html lang="en">
       <body
@@ -28,7 +29,7 @@ export default function RootLayout({
       >
         <SessionWrapper>
           <div className="p-3 flex max-w-screen h-screen gap-20">
-            {location !== '/login' && <Sidebar />}
+            {location !== '/login' && location !== '/' && <Sidebar />}
 
             {children}
           </div>

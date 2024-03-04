@@ -1,11 +1,27 @@
 'use client'
 import { BookOpen, Bookmarks, User } from 'phosphor-react'
 import Image from 'next/image'
-import profilePic from '../../assets/profile.jpeg'
 import { RatingBookItem } from '../home/RatingBookItem'
 import { Input } from '../components/Input'
+import { useSession } from 'next-auth/react'
+import { Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 export default function Profile() {
+  const session = useSession()
+  const router = useRouter()
+  if (session.status === 'loading') {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center">
+        <Loader2 className="animate-spin" />
+      </div>
+    )
+  }
+  if (session.status === 'unauthenticated') {
+    router.push('/login')
+    return
+  }
+
   return (
     <div className="flex gap-44 h-screen">
       <div id="main" className="max-h-full">
@@ -25,10 +41,15 @@ export default function Profile() {
       <div className="flex flex-col w-[324px] mt-48 border-l-[1px] max-h-screen px-10 border-gray-700">
         <div className="flex flex-col items-center">
           <div className="w-[72px] h-[72px] border-4 border-blue-200 rounded-full overflow-hidden">
-            <Image src={profilePic} alt="" height={72} width={72} />
+            <Image
+              src={session.data?.user?.image ?? ''}
+              alt=""
+              height={72}
+              width={72}
+            />
           </div>
           <h1 className="font-bold text-xl mt-6 text-gray-100">
-            Antonio Marcelo
+            {session.data?.user?.name}
           </h1>
           <p className="text-gray-400 mt-1">Mebro desde 2049</p>
         </div>

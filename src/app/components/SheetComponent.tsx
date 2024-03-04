@@ -88,7 +88,6 @@ export function SheetComponent({
           <CommentItem />
         </div>
         <LoginDialog
-          setIsNewCommentBoxVisible={setIsNewCommentBoxVisible}
           isLoginDialogOpen={isLoginDialogOpen}
           onLoginDialogOpenChange={onLoginDialogOpenChange}
         />

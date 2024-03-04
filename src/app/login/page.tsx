@@ -1,55 +1,32 @@
 'use client'
 import Image from 'next/image'
-import { unstable_getServerSession } from 'next-auth/next'
-import { authOptions } from '..'
 
 import loginPageImage from '../../assets/login-page-image.png'
 import { GithubLogo, GoogleLogo, Rocket } from 'phosphor-react'
 import { useRouter } from 'next/navigation'
-import { signIn } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
+import { Loader2 } from 'lucide-react'
+import { popupCenter } from './popup-center'
 
 export default function Login() {
   const router = useRouter()
-  async function handleGoogleSignin() {
-    // router.push('/home')
-    try {
-      await signIn('google')
-      router.push('/home')
-    } catch (err) {
-      window.alert('erro.')
-    }
-  }
 
-  function handleGithubSignin() {
+  const session = useSession()
+
+  function handleLoginAsVisitor() {
     router.push('/home')
   }
 
-  const popupCenter = (url: string, title: string) => {
-    const dualScreenLeft = window.screenLeft ?? window.screenX
-    const dualScreenTop = window.screenTop ?? window.screenY
-
-    const width =
-      window.innerWidth ?? document.documentElement.clientWidth ?? screen.width
-
-    const height =
-      window.innerHeight ??
-      document.documentElement.clientHeight ??
-      screen.height
-
-    const systemZoom = width / window.screen.availWidth
-
-    const left = (width - 500) / 2 / systemZoom + dualScreenLeft
-    const top = (height - 550) / 2 / systemZoom + dualScreenTop
-
-    const newWindow = window.open(
-      url,
-      title,
-      `width=${500 / systemZoom},height=${
-        550 / systemZoom
-      },top=${top},left=${left}`,
+  if (session.status === 'authenticated') {
+    router.push('/home')
+    return
+  }
+  if (session.status === 'loading') {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center">
+        <Loader2 className="animate-spin" />
+      </div>
     )
-
-    newWindow?.focus()
   }
 
   return (
@@ -78,7 +55,10 @@ export default function Login() {
               <GithubLogo className="h-6 w-6" />
               Entrar com Github
             </button>
-            <button className="flex items-center gap-4 p-4 text-sm bg-slate-800 h-16 rounded-lg font-bold">
+            <button
+              onClick={() => handleLoginAsVisitor()}
+              className="flex items-center gap-4 p-4 text-sm bg-slate-800 h-16 rounded-lg font-bold"
+            >
               <Rocket className="h-6 w-6" />
               Acessar como visitante
             </button>
@@ -87,16 +67,4 @@ export default function Login() {
       </div>
     </div>
   )
-}
-
-export async function getServerSideProps(context) {
-  return {
-    props: {
-      session: await unstable_getServerSession(
-        context.req,
-        context.res,
-        authOptions,
-      ),
-    },
-  }
 }

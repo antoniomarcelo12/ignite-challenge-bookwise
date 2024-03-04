@@ -3,9 +3,20 @@ import { Binoculars } from 'phosphor-react'
 import { ExploreBookItem } from './ExploreBookItem'
 import { SheetComponent } from '../components/SheetComponent'
 import { useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { Loader2 } from 'lucide-react'
 
 export default function Explore() {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
+  const session = useSession()
+
+  if (session.status === 'loading') {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center">
+        <Loader2 className="animate-spin" />
+      </div>
+    )
+  }
 
   return (
     <div className="w-[1327px]">
@@ -18,7 +29,7 @@ export default function Explore() {
       </div>
       <div className="">
         <p>Avaliações mais recentes:</p>
-        <div className="flex gap-4 mt-5 flex-wrap">
+        <div className="flex gap-3 mt-5 flex-wrap">
           {Array.from({ length: 12 }).map((item, idx) => {
             return (
               <button key={idx} onClick={() => setIsSheetOpen(true)}>

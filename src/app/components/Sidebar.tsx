@@ -6,13 +6,16 @@ import { usePathname } from 'next/navigation'
 import { LoginDialog } from './LoginDialog'
 import { useState } from 'react'
 import { signOut, useSession } from 'next-auth/react'
-import { Loader2 } from 'lucide-react'
 
 export function Sidebar() {
   const pathName = usePathname()
   const [isLoginDialogOpen, onLoginDialogOpenChange] = useState(false)
 
   const session = useSession()
+
+  if (session.status === 'loading') {
+    return
+  }
 
   return (
     <div
@@ -58,9 +61,6 @@ export function Sidebar() {
         </div>
       )}
 
-      {session.status === 'loading' && (
-        <Loader2 className="mt-auto mb-4 animate-spin" />
-      )}
       {session.status === 'unauthenticated' && (
         <button
           onClick={() => onLoginDialogOpenChange(true)}
