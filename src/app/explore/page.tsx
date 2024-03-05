@@ -2,13 +2,31 @@
 import { Binoculars } from 'phosphor-react'
 import { ExploreBookItem } from './ExploreBookItem'
 import { SheetComponent } from '../components/SheetComponent'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { Loader2 } from 'lucide-react'
+import { api } from '@/lib/axios'
+import { BookType } from '@/interfaces/Book'
 
 export default function Explore() {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
+  const [allBooksState, setAllBooksState] = useState<BookType[]>([])
+  const [selectedBook, setSelectedBook] = useState<BookType>()
   const session = useSession()
+
+  async function getBooks() {
+    const allBooks = await api.get('/api/books/get-all-books')
+    setAllBooksState(allBooks.data.books)
+  }
+
+  function handleSelectBook(book: BookType) {
+    setIsSheetOpen(true)
+    setSelectedBook(book)
+  }
+
+  useEffect(() => {
+    getBooks()
+  }, [])
 
   if (session.status === 'loading') {
     return (
@@ -30,19 +48,25 @@ export default function Explore() {
       <div className="">
         <p>Avaliações mais recentes:</p>
         <div className="flex gap-3 mt-5 flex-wrap">
-          {Array.from({ length: 12 }).map((item, idx) => {
+          {allBooksState.map((book) => {
             return (
-              <button key={idx} onClick={() => setIsSheetOpen(true)}>
-                <ExploreBookItem />
+              <button
+                key={book.cover_url}
+                onClick={() => handleSelectBook(book)}
+              >
+                <ExploreBookItem book={book} />
               </button>
             )
           })}
         </div>
       </div>
-      <SheetComponent
-        isSheetOpen={isSheetOpen}
-        onIsSheetOpenChange={setIsSheetOpen}
-      />
+      {selectedBook && (
+        <SheetComponent
+          selectedBook={selectedBook}
+          isSheetOpen={isSheetOpen}
+          onIsSheetOpenChange={setIsSheetOpen}
+        />
+      )}
     </div>
   )
 }

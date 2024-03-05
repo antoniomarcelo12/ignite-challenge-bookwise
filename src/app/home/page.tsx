@@ -5,9 +5,28 @@ import { RatingBookItem } from './RatingBookItem'
 import { PopularBooks } from './PopularBooks'
 import { useSession } from 'next-auth/react'
 import { ChevronRight, Loader2 } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { api } from '@/lib/axios'
+import { GetRecentAvaliationsResponse } from '@/interfaces/Book'
 
 export default function Home() {
   const session = useSession()
+  const [recentAvaliations, setRecentAvaliations] = useState<
+    GetRecentAvaliationsResponse[]
+  >([])
+
+  async function getRecentAvaliations() {
+    const response = await api.get('/api/books/get-recent-avaliations')
+    setRecentAvaliations(response.data.recentBookAvaliations)
+  }
+
+  useEffect(() => {
+    getRecentAvaliations()
+  }, [])
+
+  useEffect(() => {
+    console.log(recentAvaliations)
+  }, [recentAvaliations])
 
   if (session.status === 'loading') {
     return (
@@ -38,10 +57,14 @@ export default function Home() {
         )}
         <div className="mt-14 space-y-3">
           <p className="mb-6">Avaliações mais recentes</p>
-          <RatingBookItem />
-          <RatingBookItem />
-          <RatingBookItem />
-          <RatingBookItem />
+          {recentAvaliations.map((avaliation) => {
+            return (
+              <RatingBookItem
+                key={avaliation.book.name}
+                bookAvaliation={avaliation}
+              />
+            )
+          })}
         </div>
       </div>
       <PopularBooks />

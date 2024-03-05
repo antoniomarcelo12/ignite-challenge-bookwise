@@ -1,21 +1,23 @@
 import { Sheet, SheetContent, SheetHeader } from '@/components/ui/sheet'
 import Image from 'next/image'
 import { Stars } from './Stars'
-import bookCover from '../../assets/book.png'
 import { BookOpen, Bookmark } from 'phosphor-react'
 import { CommentItem } from './CommentItem'
 import { NewCommentBox } from './NewCommentBox'
 import { useState } from 'react'
 import { LoginDialog } from './LoginDialog'
+import { BookType } from '@/interfaces/Book'
 
 interface SheetComponentProps {
   isSheetOpen: boolean
   onIsSheetOpenChange: (status: boolean) => void
+  selectedBook: BookType
 }
 
 export function SheetComponent({
   isSheetOpen,
   onIsSheetOpenChange,
+  selectedBook,
 }: SheetComponentProps) {
   const [isNewCommentBoxVisible, setIsNewCommentBoxVisible] = useState(false)
   const [isLoginDialogOpen, onLoginDialogOpenChange] = useState(false)
@@ -36,13 +38,16 @@ export function SheetComponent({
       >
         <SheetHeader className="bg-slate-800 rounded-md p-8">
           <div className="flex gap-5 mb-8">
-            <Image src={bookCover} alt="" height={242} width={171} />
+            <Image
+              src={selectedBook.cover_url}
+              alt=""
+              height={242}
+              width={171}
+            />
             <div className="flex flex-col justify-between">
               <div className="py-4">
-                <h1 className="font-bold text-gray-100">
-                  A revolução dos bichos
-                </h1>
-                <p className="text-gray-300 text-sm">George Orwell</p>
+                <h1 className="font-bold text-gray-100">{selectedBook.name}</h1>
+                <p className="text-gray-300 text-sm">{selectedBook.author}</p>
               </div>
               <div className="">
                 <Stars />
@@ -55,14 +60,14 @@ export function SheetComponent({
               <Bookmark size={24} className="text-appGreen100" />
               <div className="">
                 <p className="text-sm text-gray-300">Categoria</p>
-                <p className="font-bold">Ficção</p>
+                <p className="font-bold">selectedBook</p>
               </div>
             </div>
             <div className="flex items-center mt-0 gap-4">
               <BookOpen size={24} className="text-appGreen100" />
               <div className="">
                 <p className="text-sm text-gray-300">Páginas</p>
-                <p className="font-bold">360</p>
+                <p className="font-bold">{selectedBook.total_pages}</p>
               </div>
             </div>
           </div>

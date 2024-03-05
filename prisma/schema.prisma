@@ -25,14 +25,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("accounts")
 }
 
 model User {
@@ -44,6 +37,18 @@ model User {
   accounts      Account[]
   sessions      Session[]
   Rating        Rating[]
+
+  @@map("users")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
 }
 
 model VerificationToken {
@@ -92,7 +97,7 @@ model Rating {
   id          String   @id @default(uuid())
   rate        Int
   description String
-  created_at  DateTime @default(now())
+  created_at  DateTime
 
   book    Book   @relation(fields: [book_id], references: [id])
   book_id String
