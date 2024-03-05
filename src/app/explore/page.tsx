@@ -48,12 +48,9 @@ export default function Explore() {
       <div className="">
         <p>Avaliações mais recentes:</p>
         <div className="flex gap-3 mt-5 flex-wrap">
-          {allBooksState.map((book) => {
+          {allBooksState.map((book, idx) => {
             return (
-              <button
-                key={book.cover_url}
-                onClick={() => handleSelectBook(book)}
-              >
+              <button key={idx} onClick={() => handleSelectBook(book)}>
                 <ExploreBookItem book={book} />
               </button>
             )

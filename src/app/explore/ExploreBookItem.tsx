@@ -15,7 +15,7 @@ export function ExploreBookItem({ book }: ExploreBookItemProps) {
           <h1 className="font-bold text-gray-300">{book.name}</h1>
           <p className="text-gray-400">{book.author}</p>
         </div>
-        <Stars />
+        <Stars rating={book.rating} />
       </div>
     </div>
   )

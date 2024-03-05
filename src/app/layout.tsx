@@ -6,6 +6,7 @@ import { Sidebar } from './components/Sidebar'
 import { cn } from '../lib/utils'
 import { usePathname } from 'next/navigation'
 import SessionWrapper from './components/auth/SessionProvider'
+import { Toaster } from 'sonner'
 
 export const fontSans = FontSans({
   subsets: ['latin'],
@@ -34,6 +35,7 @@ export default function RootLayout({
             {children}
           </div>
         </SessionWrapper>
+        <Toaster />
       </body>
     </html>
   )

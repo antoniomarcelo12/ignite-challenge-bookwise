@@ -49,7 +49,10 @@ export function Sidebar() {
             height={32}
             alt=""
           />
-          <Link href="/profile" className="max-w-[60%] truncate text-sm">
+          <Link
+            href={`/profile/${session.data.user.id}`}
+            className="max-w-[60%] truncate text-sm"
+          >
             {session.data.user?.name}
           </Link>
           <button
@@ -72,6 +75,7 @@ export function Sidebar() {
       )}
 
       <LoginDialog
+        label="Faça login para utilizar todas as nossas funcionalidades!"
         isLoginDialogOpen={isLoginDialogOpen}
         onLoginDialogOpenChange={onLoginDialogOpenChange}
       />

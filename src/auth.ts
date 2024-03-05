@@ -14,4 +14,12 @@ export const {
 } = NextAuth({
   adapter: PrismaAdapter(prisma),
   ...authConfig,
+  callbacks: {
+    async session({ session, user }) {
+      return {
+        ...session,
+        user,
+      }
+    },
+  },
 })

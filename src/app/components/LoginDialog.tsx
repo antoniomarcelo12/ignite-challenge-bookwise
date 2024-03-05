@@ -11,11 +11,13 @@ import { popupCenter } from '../login/popup-center'
 interface LoginDialogProps {
   isLoginDialogOpen: boolean
   onLoginDialogOpenChange: (status: boolean) => void
+  label: string
 }
 
 export function LoginDialog({
   isLoginDialogOpen,
   onLoginDialogOpenChange,
+  label,
 }: LoginDialogProps) {
   function handleLogin(provider: string) {
     if (provider === 'google') {
@@ -28,9 +30,7 @@ export function LoginDialog({
     <Dialog onOpenChange={onLoginDialogOpenChange} open={isLoginDialogOpen}>
       <DialogContent className="w-[516px] flex flex-col items-center">
         <DialogHeader>
-          <DialogTitle className="text-base font-bold">
-            Faça login para deixar sua avaliação
-          </DialogTitle>
+          <DialogTitle className="text-base font-bold">{label}</DialogTitle>
         </DialogHeader>
         <DialogDescription className="flex flex-col w-[70%] gap-4 mt-5">
           <button

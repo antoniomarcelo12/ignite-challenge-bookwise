@@ -4,9 +4,11 @@ import { Stars } from './Stars'
 import { BookOpen, Bookmark } from 'phosphor-react'
 import { CommentItem } from './CommentItem'
 import { NewCommentBox } from './NewCommentBox'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { LoginDialog } from './LoginDialog'
-import { BookType } from '@/interfaces/Book'
+import { BookType, GetBookAvaliationResponse } from '@/interfaces/Book'
+import { api } from '@/lib/axios'
+import { useSession } from 'next-auth/react'
 
 interface SheetComponentProps {
   isSheetOpen: boolean
@@ -21,12 +23,28 @@ export function SheetComponent({
 }: SheetComponentProps) {
   const [isNewCommentBoxVisible, setIsNewCommentBoxVisible] = useState(false)
   const [isLoginDialogOpen, onLoginDialogOpenChange] = useState(false)
+  const [bookData, setBookData] = useState<GetBookAvaliationResponse[]>()
 
-  const session = null
+  async function getBookAvaliations() {
+    const response = await api.get(
+      `/api/books/get-book-avaliations/${selectedBook.id}`,
+    )
+    setBookData(response.data.bookAvaliations)
+  }
+  useEffect(() => {
+    if (isSheetOpen) {
+      getBookAvaliations()
+    }
+  }, [isSheetOpen])
+
+  const session = useSession()
   function handleCreateNewComment() {
-    if (!session) {
-      // onLoginDialogOpenChange(true)
-      setIsNewCommentBoxVisible(!isNewCommentBoxVisible)
+    if (session.status === 'authenticated') {
+      setIsNewCommentBoxVisible(true)
+    }
+    if (session.status === 'unauthenticated') {
+      onLoginDialogOpenChange(true)
+      setIsNewCommentBoxVisible(true)
     }
   }
 
@@ -50,8 +68,12 @@ export function SheetComponent({
                 <p className="text-gray-300 text-sm">{selectedBook.author}</p>
               </div>
               <div className="">
-                <Stars />
-                <p className="text-gray-400 text-xs mt-1">3 avaliações</p>
+                <Stars rating={selectedBook.rating} />
+                <p className="text-gray-400 text-xs mt-1">
+                  {bookData && bookData?.length > 1
+                    ? `${bookData?.length} avaliações`
+                    : `${bookData?.length} avaliação`}
+                </p>
               </div>
             </div>
           </div>
@@ -82,17 +104,20 @@ export function SheetComponent({
               Avaliar
             </button>
           </div>
-          {isNewCommentBoxVisible && (
+          {isNewCommentBoxVisible && session.status === 'authenticated' && (
             <NewCommentBox
+              getBookAvaliations={getBookAvaliations}
+              selectedBook={selectedBook}
               setIsNewCommentBoxVisible={setIsNewCommentBoxVisible}
             />
           )}
 
-          <CommentItem />
-          <CommentItem />
-          <CommentItem />
+          {bookData?.map((item, idx) => {
+            return <CommentItem key={idx} selectedBookData={item} />
+          })}
         </div>
         <LoginDialog
+          label="Faça login para deixar sua avaliação"
           isLoginDialogOpen={isLoginDialogOpen}
           onLoginDialogOpenChange={onLoginDialogOpenChange}
         />

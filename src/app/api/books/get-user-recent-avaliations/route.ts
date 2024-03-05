@@ -1,8 +1,16 @@
 import { prisma } from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 
-export async function GET() {
-  const bookAvaliations = await prisma.rating.findMany({
+export async function GET(request: Request) {
+  const url = request.url
+  const data = url.split('?')
+  const dataParsed = data[1].split('=')
+  const userId = dataParsed[1]
+
+  const recentBookAvaliations = await prisma.rating.findMany({
+    where: {
+      user_id: userId,
+    },
     orderBy: {
       created_at: 'desc',
     },

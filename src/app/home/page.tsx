@@ -8,12 +8,15 @@ import { ChevronRight, Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { api } from '@/lib/axios'
 import { GetRecentAvaliationsResponse } from '@/interfaces/Book'
+import Link from 'next/link'
 
 export default function Home() {
   const session = useSession()
   const [recentAvaliations, setRecentAvaliations] = useState<
     GetRecentAvaliationsResponse[]
   >([])
+  const [myLastReview, setMyLastReview] =
+    useState<GetRecentAvaliationsResponse>()
 
   async function getRecentAvaliations() {
     const response = await api.get('/api/books/get-recent-avaliations')
@@ -21,12 +24,17 @@ export default function Home() {
   }
 
   useEffect(() => {
-    getRecentAvaliations()
-  }, [])
+    if (session.status === 'authenticated') {
+      const myLastReview = recentAvaliations.find(
+        (item) => item.user_id === session?.data?.user?.id,
+      )
+      setMyLastReview(myLastReview)
+    }
+  }, [session, recentAvaliations])
 
   useEffect(() => {
-    console.log(recentAvaliations)
-  }, [recentAvaliations])
+    getRecentAvaliations()
+  }, [])
 
   if (session.status === 'loading') {
     return (
@@ -48,21 +56,20 @@ export default function Home() {
           <div className="mt-14">
             <div className="flex justify-between mb-5">
               <p>Sua última leitura</p>
-              <button className="flex items-center gap-3">
-                Ver todas <ChevronRight />
-              </button>
+              <Link href="/profile">
+                <button className="flex items-center gap-3">
+                  Ver todas <ChevronRight />
+                </button>
+              </Link>
             </div>
-            <RatingBookItem isProfilePage />
+            <RatingBookItem bookAvaliation={myLastReview} isProfilePage />
           </div>
         )}
         <div className="mt-14 space-y-3">
           <p className="mb-6">Avaliações mais recentes</p>
           {recentAvaliations.map((avaliation) => {
             return (
-              <RatingBookItem
-                key={avaliation.book.name}
-                bookAvaliation={avaliation}
-              />
+              <RatingBookItem key={avaliation.id} bookAvaliation={avaliation} />
             )
           })}
         </div>
