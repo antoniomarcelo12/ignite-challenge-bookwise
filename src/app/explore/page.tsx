@@ -7,16 +7,42 @@ import { useSession } from 'next-auth/react'
 import { Loader2 } from 'lucide-react'
 import { api } from '@/lib/axios'
 import { BookType } from '@/interfaces/Book'
+import { Toggle } from '../components/Toggle'
+
+interface booksFilteredByCategoryData {
+  book: {
+    name: string
+    cover_url: string
+    author: string
+    summary: string
+  }
+  category: {
+    name: string
+  }
+}
 
 export default function Explore() {
-  const [isSheetOpen, setIsSheetOpen] = useState(false)
-  const [allBooksState, setAllBooksState] = useState<BookType[]>([])
-  const [selectedBook, setSelectedBook] = useState<BookType>()
   const session = useSession()
+
+  const [isSheetOpen, setIsSheetOpen] = useState(false)
+  const [allBooksState, setAllBooksState] = useState<BookType>()
+  const [selectedBook, setSelectedBook] = useState<BookType>()
+  const [categoryFilter, setCategoryFilter] = useState('Tudo')
+  const [booksFilteredByCategory, setBooksFilteredByCategory] = useState<
+    booksFilteredByCategoryData[] | undefined
+  >([])
+
+  useEffect(() => {
+    const newArray = allBooksState?.categories.filter(
+      (book) => book.category.name === categoryFilter,
+    )
+
+    setBooksFilteredByCategory(newArray)
+  }, [categoryFilter])
 
   async function getBooks() {
     const allBooks = await api.get('/api/books/get-all-books')
-    setAllBooksState(allBooks.data.books)
+    setAllBooksState(allBooks.data)
   }
 
   function handleSelectBook(book: BookType) {
@@ -27,6 +53,10 @@ export default function Explore() {
   useEffect(() => {
     getBooks()
   }, [])
+
+  useEffect(() => {
+    console.log('allBooksState: ', allBooksState)
+  }, [allBooksState])
 
   if (session.status === 'loading') {
     return (
@@ -46,15 +76,25 @@ export default function Explore() {
         </div>
       </div>
       <div className="">
-        <p>Avaliações mais recentes:</p>
+        <Toggle changeCategoryFilter={setCategoryFilter} />
         <div className="flex gap-3 mt-5 flex-wrap">
-          {allBooksState.map((book, idx) => {
-            return (
-              <button key={idx} onClick={() => handleSelectBook(book)}>
-                <ExploreBookItem book={book} />
-              </button>
-            )
-          })}
+          {categoryFilter === 'Tudo' &&
+            allBooksState?.books.map((book, idx) => {
+              return (
+                <button key={idx} onClick={() => handleSelectBook(book)}>
+                  <ExploreBookItem book={book} />
+                </button>
+              )
+            })}
+          {categoryFilter !== 'Tudo' &&
+            booksFilteredByCategory &&
+            booksFilteredByCategory.map((book, idx) => {
+              return (
+                <button key={idx} onClick={() => handleSelectBook(book.book)}>
+                  <ExploreBookItem book={book.book} />
+                </button>
+              )
+            })}
         </div>
       </div>
       {selectedBook && (

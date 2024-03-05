@@ -1,7 +1,33 @@
 import { CaretCircleRight } from 'phosphor-react'
 import { PopularBooksItem } from './PopularBooksItem'
+import { useEffect, useState } from 'react'
+import { api } from '@/lib/axios'
+
+interface PopularBooksResponse {
+  popularBooksParsed: {
+    bookId: string
+    bookName: string
+    bookCover: string
+    bookAuthor: string
+    bookAmountAcc: number
+  }[]
+}
 
 export function PopularBooks() {
+  const [popularBooks, setPopularBooks] = useState<PopularBooksResponse>([])
+
+  async function getPopularBooks() {
+    const response = await api.get('/api/books/get-popular-books')
+
+    setPopularBooks(response.data)
+  }
+
+  useEffect(() => {
+    getPopularBooks()
+  }, [])
+
+  console.log('popularBooks: ', popularBooks)
+
   return (
     <div className="w-[324px] mt-48">
       <div className="flex justify-between mb-2 text-sm">
@@ -11,11 +37,13 @@ export function PopularBooks() {
         </button>
       </div>
       <div className="flex flex-col gap-3">
-        <PopularBooksItem />
-        <PopularBooksItem />
-        <PopularBooksItem />
-        <PopularBooksItem />
-        <PopularBooksItem />
+        {popularBooks.popularBooksParsed &&
+          popularBooks.popularBooksParsed.map((book, idx) => {
+            if (idx < 5) {
+              return <PopularBooksItem key={book.bookId} popularBook={book} />
+            }
+            return null
+          })}
       </div>
     </div>
   )

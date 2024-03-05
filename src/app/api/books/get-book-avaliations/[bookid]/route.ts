@@ -2,7 +2,6 @@ import { prisma } from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
-  console.log('REQUEST: ', request.url)
   const bookId = request.url.split('get-book-avaliations/')[1]
 
   const bookAvaliations = await prisma.rating.findMany({
