@@ -54,10 +54,6 @@ export default function Explore() {
     getBooks()
   }, [])
 
-  useEffect(() => {
-    console.log('allBooksState: ', allBooksState)
-  }, [allBooksState])
-
   if (session.status === 'loading') {
     return (
       <div className="h-screen w-screen flex items-center justify-center">

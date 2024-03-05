@@ -24,6 +24,10 @@ export function LoginDialog({
       popupCenter('/login/google', 'Google login')
       onLoginDialogOpenChange(false)
     }
+    if (provider === 'github') {
+      popupCenter('/login/github', 'Github login')
+      onLoginDialogOpenChange(false)
+    }
   }
 
   return (
@@ -39,7 +43,10 @@ export function LoginDialog({
           >
             <GoogleLogo size={32} /> Entrar com Google
           </button>
-          <button className="flex items-center h-[72px] bg-slate-700 text-gray-100 text-lg p-4 gap-3 rounded-lg">
+          <button
+            onClick={() => handleLogin('github')}
+            className="flex items-center h-[72px] bg-slate-700 text-gray-100 text-lg p-4 gap-3 rounded-lg"
+          >
             <GithubLogo size={32} /> Entrar com Github
           </button>
         </DialogDescription>

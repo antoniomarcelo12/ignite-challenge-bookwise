@@ -38,31 +38,17 @@ export async function GET() {
     },
   })
 
-  // const newArray = allBooksWithCategories.map((book) => {
-  //   for (let i = 0; i <= allBooksWithCategories.length; i++) {
-  //     if (book.book_id === allBooksWithCategories[i].book_id) {
-  //       return {
-  //         ...book,
-  //         category: allBooksWithCategories[i].category,
-  //       }
-  //     }
-  //   }
-  // })
-
   const categories = allBooksWithCategories.map((book) => {
-    // Encontre todas as categorias correspondentes ao livro atual
     const categories = allBooksWithCategories
       .filter((otherBook) => otherBook.book_id === book.book_id)
       .map((bookWithCategory) => bookWithCategory.category)
 
-    // Retorne um novo objeto com as categorias adicionadas
     return {
       ...book,
       categories,
     }
   })
 
-  console.log('KKKKKKKKKKKKKKKKKKKKKKKKknewArray: ', categories)
 
   return NextResponse.json(
     { books: allBooksWithRatings, categories },

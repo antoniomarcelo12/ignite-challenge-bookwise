@@ -9,7 +9,6 @@ export async function GET(request: Request) {
   const dataParsed = data[1]
   const userId = dataParsed
 
-  console.log('userIDKLKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK: ', userId)
   const userData = await prisma.user.findFirst({
     where: {
       id: userId,

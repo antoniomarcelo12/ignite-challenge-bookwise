@@ -26,8 +26,6 @@ export function PopularBooks() {
     getPopularBooks()
   }, [])
 
-  console.log('popularBooks: ', popularBooks)
-
   return (
     <div className="w-[324px] mt-48">
       <div className="flex justify-between mb-2 text-sm">
