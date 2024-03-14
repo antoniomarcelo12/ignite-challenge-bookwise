@@ -2,7 +2,7 @@
 import { Binoculars } from 'phosphor-react'
 import { ExploreBookItem } from './ExploreBookItem'
 import { SheetComponent } from './Sheet/SheetComponent'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { Loader2 } from 'lucide-react'
 import { api } from '@/lib/axios'
@@ -83,46 +83,48 @@ export default function Explore() {
   }
 
   return (
-    <div className="w-[1327px]">
-      <div className="flex justify-between items-center">
-        <div className="mt-24">
-          <h1 className="mb-14 flex items-center text-gray-100 text-3xl gap-3 font-bold">
-            <Binoculars className="text-appGreen100" /> Explorar
-          </h1>
+    <Suspense>
+      <div className="w-[1327px]">
+        <div className="flex justify-between items-center">
+          <div className="mt-24">
+            <h1 className="mb-14 flex items-center text-gray-100 text-3xl gap-3 font-bold">
+              <Binoculars className="text-appGreen100" /> Explorar
+            </h1>
+          </div>
         </div>
-      </div>
-      <div className="">
-        <Toggle
-          categoryFilter={categoryFilter}
-          changeCategoryFilter={setCategoryFilter}
-        />
-        <div className="flex gap-3 mt-5 flex-wrap">
-          {categoryFilter === 'Tudo' &&
-            allBooksState?.map((book) => {
-              return (
-                <button key={book.id} onClick={() => handleSelectBook(book)}>
-                  <ExploreBookItem book={book} />
-                </button>
-              )
-            })}
-          {categoryFilter !== 'Tudo' &&
-            booksFilteredByCategory &&
-            booksFilteredByCategory.map((book) => {
-              return (
-                <button key={book.id} onClick={() => handleSelectBook(book)}>
-                  <ExploreBookItem book={book} />
-                </button>
-              )
-            })}
+        <div className="">
+          <Toggle
+            categoryFilter={categoryFilter}
+            changeCategoryFilter={setCategoryFilter}
+          />
+          <div className="flex gap-3 mt-5 flex-wrap">
+            {categoryFilter === 'Tudo' &&
+              allBooksState?.map((book) => {
+                return (
+                  <button key={book.id} onClick={() => handleSelectBook(book)}>
+                    <ExploreBookItem book={book} />
+                  </button>
+                )
+              })}
+            {categoryFilter !== 'Tudo' &&
+              booksFilteredByCategory &&
+              booksFilteredByCategory.map((book) => {
+                return (
+                  <button key={book.id} onClick={() => handleSelectBook(book)}>
+                    <ExploreBookItem book={book} />
+                  </button>
+                )
+              })}
+          </div>
         </div>
+        {selectedBook && (
+          <SheetComponent
+            selectedBook={selectedBook}
+            isSheetOpen={isSheetOpen}
+            onIsSheetOpenChange={changeSheetVisibility}
+          />
+        )}
       </div>
-      {selectedBook && (
-        <SheetComponent
-          selectedBook={selectedBook}
-          isSheetOpen={isSheetOpen}
-          onIsSheetOpenChange={changeSheetVisibility}
-        />
-      )}
-    </div>
+    </Suspense>
   )
 }
