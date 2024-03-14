@@ -25,6 +25,7 @@ export function ProfileSummary({ userData }: ProfileSummaryProps) {
   }, [userid])
 
   const mostReadCategoriesString = mostReadCategory
+    .slice(2)
     .toString()
     .replace(',', ', ')
 
@@ -38,6 +39,7 @@ export function ProfileSummary({ userData }: ProfileSummaryProps) {
               alt=""
               height={72}
               width={72}
+              priority={true}
             />
           )}
         </div>

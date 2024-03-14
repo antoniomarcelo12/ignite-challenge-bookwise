@@ -6,10 +6,11 @@ import { useSession } from 'next-auth/react'
 import { Loader2 } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { api } from '@/lib/axios'
-import { useEffect, useState } from 'react'
+import { Suspense, useCallback, useEffect, useState } from 'react'
 import { GetUserAvaliationsResponse } from '@/interfaces/Book'
 import { ProfileSummary } from './profileSummary'
 import { GetProfileResponse } from '@/interfaces/User'
+import { LoadingUserRatings } from './loading-user-ratings'
 
 export default function Profile() {
   const session = useSession()
@@ -38,11 +39,7 @@ export default function Profile() {
       setUserData(response.data)
     }
     getProfile()
-    const userRatingFiltered = userRatings.filter(
-      (rating) => rating.user_id === userid,
-    )
-    setUserRatings(userRatingFiltered)
-  }, [userid, userRatings])
+  }, [userid])
 
   useEffect(() => {
     async function getUserAvaliations() {
