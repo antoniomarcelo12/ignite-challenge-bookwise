@@ -20,7 +20,13 @@ export function SheetHeaderComponent({
   return (
     <SheetHeader className="bg-slate-800 rounded-md p-8">
       <div className="flex gap-5 mb-8">
-        <Image src={selectedBook.cover_url} alt="" height={242} width={171} />
+        <Image
+          src={selectedBook.cover_url}
+          alt=""
+          height={242}
+          width={171}
+          className="w-[171px] h-[242px]"
+        />
         <div className="flex flex-col justify-between">
           <div className="py-4">
             <h1 className="font-bold text-gray-100">{selectedBook.name}</h1>

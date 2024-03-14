@@ -44,7 +44,7 @@ export function NewCommentBox({
   async function handleCreateReview() {
     if (starsAmount > 0) {
       try {
-        await api.post('/api/books/make-book-review', {
+        await api.post('/api/books/make-book-avaliation', {
           reviewText,
           starsAmount,
           selectedBookId: selectedBook.id,

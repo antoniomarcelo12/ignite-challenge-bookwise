@@ -22,16 +22,16 @@ export default function Home() {
     const response = await api.get('/api/books/get-recent-avaliations')
     setRecentAvaliations(response.data.recentBookAvaliations)
   }
-  function getMyLastAvaliation() {
-    if (session.status === 'authenticated') {
-      const myLastReview = recentAvaliations.find(
-        (item) => item.user_id === session?.data?.user?.id,
-      )
-      setMyLastReview(myLastReview)
-    }
-  }
 
   useEffect(() => {
+    function getMyLastAvaliation() {
+      if (session.status === 'authenticated') {
+        const myLastReview = recentAvaliations.find(
+          (item) => item.user_id === session?.data?.user?.id,
+        )
+        setMyLastReview(myLastReview)
+      }
+    }
     getMyLastAvaliation()
   }, [session, recentAvaliations])
 

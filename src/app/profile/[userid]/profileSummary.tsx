@@ -14,16 +14,15 @@ export function ProfileSummary({ userData }: ProfileSummaryProps) {
   const [mostReadCategory, setMostReadCategory] = useState<string[]>([])
   const { userid } = useParams()
 
-  async function getMostReadCategories() {
-    const response = await api.get(
-      `/api/profile/get-most-read-category/${userid}`,
-    )
-    setMostReadCategory(response.data.mostReadCategoriesArray)
-  }
-
   useEffect(() => {
+    async function getMostReadCategories() {
+      const response = await api.get(
+        `/api/profile/get-most-read-category/${userid}`,
+      )
+      setMostReadCategory(response.data.mostReadCategoriesArray)
+    }
     getMostReadCategories()
-  }, [])
+  }, [userid])
 
   const mostReadCategoriesString = mostReadCategory
     .toString()

@@ -25,38 +25,37 @@ export default function Profile() {
     GetUserAvaliationsResponse[]
   >([])
 
-  async function getProfile() {
-    const response = await api.get(`/api/profile/get-profile/${userid}`)
-    setUserData(response.data)
-  }
-
-  async function getUserAvaliations() {
-    const response = await api.get(
-      `/api/books/get-user-recent-avaliations/${userid}`,
-    )
-    setUserRatings(response.data.recentBookAvaliations)
-  }
-
   useEffect(() => {
     const newArray = userRatings.filter((rating) => {
       return rating.book.name.includes(searchString)
     })
     setUserRatingsFiltered(newArray)
-  }, [searchString])
+  }, [searchString, userRatings])
 
   useEffect(() => {
+    async function getProfile() {
+      const response = await api.get(`/api/profile/get-profile/${userid}`)
+      setUserData(response.data)
+    }
     getProfile()
     const userRatingFiltered = userRatings.filter(
       (rating) => rating.user_id === userid,
     )
     setUserRatings(userRatingFiltered)
-  }, [userid])
+  }, [userid, userRatings])
 
   useEffect(() => {
+    async function getUserAvaliations() {
+      const response = await api.get(
+        `/api/books/get-user-recent-avaliations/${userid}`,
+      )
+      setUserRatings(response.data.recentBookAvaliations)
+    }
+
     if (session.status === 'authenticated') {
       getUserAvaliations()
     }
-  }, [session.status])
+  }, [session.status, userid])
 
   if (session.status === 'loading') {
     return (

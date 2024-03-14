@@ -4,7 +4,7 @@ import { Stars } from '../../components/Stars'
 import { BookOpen, Bookmark } from 'phosphor-react'
 import { CommentItem } from './CommentItem'
 import { NewCommentBox } from './NewCommentBox'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { LoginDialog } from '../../components/LoginDialog'
 import { BookType, GetBookAvaliationResponse } from '@/interfaces/Book'
 import { api } from '@/lib/axios'
@@ -26,17 +26,18 @@ export function SheetComponent({
   const [isLoginDialogOpen, onLoginDialogOpenChange] = useState(false)
   const [bookData, setBookData] = useState<GetBookAvaliationResponse>()
 
-  async function getBookAvaliations() {
+  const getBookAvaliations = useCallback(async () => {
     const response = await api.get(
       `/api/books/get-book-avaliations/${selectedBook.id}`,
     )
     setBookData(response.data)
-  }
+  }, [selectedBook.id])
+
   useEffect(() => {
     if (isSheetOpen) {
       getBookAvaliations()
     }
-  }, [isSheetOpen])
+  }, [isSheetOpen, getBookAvaliations])
 
   const session = useSession()
   function handleCreateNewComment() {
