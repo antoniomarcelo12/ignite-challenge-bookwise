@@ -111,8 +111,6 @@ export default function Profile() {
       </div>
 
       <ProfileSummary userData={userData} />
-
-      <ProfileSummary userData={userData} />
     </div>
   )
 }
