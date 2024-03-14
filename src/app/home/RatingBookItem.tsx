@@ -51,7 +51,8 @@ export function RatingBookItem({
             height={152}
             width={108}
             alt=""
-            className="max-h-[152px]"
+            className="h-[152px] w-[108px]"
+            priority={true}
           />
         )}
         <div className="flex flex-col justify-around">

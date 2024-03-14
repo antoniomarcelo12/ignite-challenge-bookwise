@@ -1,11 +1,11 @@
 import { Sheet, SheetContent, SheetHeader } from '@/components/ui/sheet'
 import Image from 'next/image'
-import { Stars } from './Stars'
+import { Stars } from '../../components/Stars'
 import { BookOpen, Bookmark } from 'phosphor-react'
 import { CommentItem } from './CommentItem'
 import { NewCommentBox } from './NewCommentBox'
 import { useEffect, useState } from 'react'
-import { LoginDialog } from './LoginDialog'
+import { LoginDialog } from '../../components/LoginDialog'
 import { BookType, GetBookAvaliationResponse } from '@/interfaces/Book'
 import { api } from '@/lib/axios'
 import { useSession } from 'next-auth/react'
@@ -47,6 +47,9 @@ export function SheetComponent({
       setIsNewCommentBoxVisible(true)
     }
   }
+  const categoriesConcatenedString = selectedBook.categoriesArray
+    .toString()
+    .replace(',', ', ')
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={onIsSheetOpenChange}>
@@ -68,7 +71,7 @@ export function SheetComponent({
                 <p className="text-gray-300 text-sm">{selectedBook.author}</p>
               </div>
               <div className="">
-                <Stars rating={selectedBook.rating} />
+                <Stars rating={selectedBook.averageRating} />
                 <p className="text-gray-400 text-xs mt-1">
                   {bookData && bookData?.length > 1
                     ? `${bookData?.length} avaliações`
@@ -82,7 +85,7 @@ export function SheetComponent({
               <Bookmark size={24} className="text-appGreen100" />
               <div className="">
                 <p className="text-sm text-gray-300">Categoria</p>
-                <p className="font-bold">selectedBook</p>
+                <p className="font-bold">{categoriesConcatenedString}</p>
               </div>
             </div>
             <div className="flex items-center mt-0 gap-4">

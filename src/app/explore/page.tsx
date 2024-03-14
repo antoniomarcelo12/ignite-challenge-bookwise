@@ -1,13 +1,15 @@
 'use client'
 import { Binoculars } from 'phosphor-react'
 import { ExploreBookItem } from './ExploreBookItem'
-import { SheetComponent } from '../components/SheetComponent'
+import { SheetComponent } from './Sheet/SheetComponent'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { Loader2 } from 'lucide-react'
 import { api } from '@/lib/axios'
 import { BookType } from '@/interfaces/Book'
-import { Toggle } from '../components/Toggle'
+import { Toggle } from './Toggle'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { toast } from 'sonner'
 
 interface booksFilteredByCategoryData {
   book: {
@@ -23,36 +25,65 @@ interface booksFilteredByCategoryData {
 
 export default function Explore() {
   const session = useSession()
+  const searchParams = useSearchParams()
+  const router = useRouter()
 
   const [isSheetOpen, setIsSheetOpen] = useState(false)
-  const [allBooksState, setAllBooksState] = useState<BookType>()
+  const [allBooksState, setAllBooksState] = useState<BookType[]>()
   const [selectedBook, setSelectedBook] = useState<BookType>()
   const [categoryFilter, setCategoryFilter] = useState('Tudo')
   const [booksFilteredByCategory, setBooksFilteredByCategory] = useState<
-    booksFilteredByCategoryData[] | undefined
+    BookType[] | undefined
   >([])
-
-  useEffect(() => {
-    const newArray = allBooksState?.categories.filter(
-      (book) => book.category.name === categoryFilter,
-    )
-
-    setBooksFilteredByCategory(newArray)
-  }, [categoryFilter])
-
-  async function getBooks() {
-    const allBooks = await api.get('/api/books/get-all-books')
-    setAllBooksState(allBooks.data)
-  }
-
-  function handleSelectBook(book: BookType) {
-    setIsSheetOpen(true)
-    setSelectedBook(book)
-  }
 
   useEffect(() => {
     getBooks()
   }, [])
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString())
+    const bookId = params.get('bookId')
+
+    if (bookId) {
+      const isThereThisBook = allBooksState?.some((book) => book.id === bookId)
+
+      setSelectedBook(allBooksState?.filter((book) => book.id === bookId)[0])
+      if (selectedBook) {
+        setIsSheetOpen(true)
+      } else {
+        if (!isThereThisBook) {
+          toast.error('Livro com id fornecido não existe.')
+          router.push('/explore')
+        }
+      }
+    }
+  }, [router])
+
+  useEffect(() => {
+    const filteredBooks = allBooksState?.filter((book) =>
+      book.categoriesArray.includes(categoryFilter),
+    )
+    setBooksFilteredByCategory(filteredBooks)
+  }, [categoryFilter, allBooksState])
+
+  async function getBooks() {
+    const allBooks = await api.get('/api/books/get-all-books')
+    setAllBooksState(allBooks.data.allBooks)
+  }
+
+  function handleSelectBook(book: BookType) {
+    router.push(`/explore?bookId=${book.id}`)
+  }
+
+  function changeSheetVisibility(value: boolean) {
+    const params = new URLSearchParams(searchParams.toString())
+
+    setIsSheetOpen(value)
+
+    if (value === false) {
+      router.push('/explore')
+    }
+  }
 
   if (session.status === 'loading') {
     return (
@@ -75,19 +106,19 @@ export default function Explore() {
         <Toggle changeCategoryFilter={setCategoryFilter} />
         <div className="flex gap-3 mt-5 flex-wrap">
           {categoryFilter === 'Tudo' &&
-            allBooksState?.books.map((book, idx) => {
+            allBooksState?.map((book) => {
               return (
-                <button key={idx} onClick={() => handleSelectBook(book)}>
+                <button key={book.id} onClick={() => handleSelectBook(book)}>
                   <ExploreBookItem book={book} />
                 </button>
               )
             })}
           {categoryFilter !== 'Tudo' &&
             booksFilteredByCategory &&
-            booksFilteredByCategory.map((book, idx) => {
+            booksFilteredByCategory.map((book) => {
               return (
-                <button key={idx} onClick={() => handleSelectBook(book.book)}>
-                  <ExploreBookItem book={book.book} />
+                <button key={book.id} onClick={() => handleSelectBook(book)}>
+                  <ExploreBookItem book={book} />
                 </button>
               )
             })}
@@ -97,7 +128,7 @@ export default function Explore() {
         <SheetComponent
           selectedBook={selectedBook}
           isSheetOpen={isSheetOpen}
-          onIsSheetOpenChange={setIsSheetOpen}
+          onIsSheetOpenChange={changeSheetVisibility}
         />
       )}
     </div>

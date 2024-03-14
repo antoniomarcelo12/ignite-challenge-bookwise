@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
-  const allBooks = await prisma.book.findMany({
+  const books = await prisma.book.findMany({
     include: {
       categories: {
         select: {
@@ -21,7 +21,7 @@ export async function GET() {
     },
   })
 
-  const booksWithTotalRatings = allBooks.map((book) => {
+  const booksWithTotalRatings = books.map((book) => {
     const bookSumOfRatings = book.ratings.reduce(
       (acc, rating) => acc + rating.rate,
       0,
@@ -32,10 +32,33 @@ export async function GET() {
     }
   }, 0)
 
-  const newArray = booksWithTotalRatings.map((item) => {
-    const { ratings, ...newArray } = item
+  const categoriesArray = booksWithTotalRatings.map((book) => {
+    const catArray = book.categories.map((category) => category.category.name)
+    const bookWithCategoryAndId = {
+      bookId: book.id,
+      catArray,
+    }
+
+    return bookWithCategoryAndId
+  })
+
+  const allBooksWithoutCategories = booksWithTotalRatings.map((item) => {
+    const { ratings, categories, ...newArray } = item
     return newArray
   })
 
-  return NextResponse.json({ newArray, booksWithTotalRatings }, { status: 200 })
+  const allBooks = allBooksWithoutCategories.map((book) => {
+    let array: string[] = []
+    for (let b = 0; b < categoriesArray.length; b++) {
+      if (categoriesArray[b].bookId === book.id) {
+        array = categoriesArray[b].catArray
+      }
+    }
+    return {
+      ...book,
+      categoriesArray: array,
+    }
+  })
+
+  return NextResponse.json({ allBooks }, { status: 200 })
 }

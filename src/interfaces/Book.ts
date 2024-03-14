@@ -1,23 +1,13 @@
 export interface BookType {
-  books: {
-    author: string
-    cover_url: string
-    created_at: string
-    name: string
-    summary: string
-    total_pages: number
-    id: string
-    rating: number
-  }[]
-  categories: {
-    book_id: string
-    category: {
-      name: string
-    }
-    book: {
-      name: string
-    }
-  }[]
+  id: string
+  name: string
+  author: string
+  summary: string
+  cover_url: string
+  total_pages: number
+  created_at: string
+  averageRating: number
+  categoriesArray: string[]
 }
 
 export interface GetRecentAvaliationsResponse {

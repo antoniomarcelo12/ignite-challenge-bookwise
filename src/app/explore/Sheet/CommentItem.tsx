@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { Stars } from './Stars'
+import { Stars } from '../../components/Stars'
 import { GetBookAvaliationResponse } from '@/interfaces/Book'
 import { formatDistanceToNow } from 'date-fns'
 import Link from 'next/link'

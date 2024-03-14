@@ -14,7 +14,7 @@ export function PopularBooksItem({ popularBook }: PopularBooksItemProps) {
         height={94}
         width={64}
         alt=""
-        className="min-w-[64px] h-[94px]"
+        className="w-[64px] h-[94px]"
       />
       <div className="flex flex-col justify-between">
         <div className="">

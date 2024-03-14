@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { Stars } from './Stars'
+import { Stars } from '../../components/Stars'
 import { Check, X } from 'phosphor-react'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'

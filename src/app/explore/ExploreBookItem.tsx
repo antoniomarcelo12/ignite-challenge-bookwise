@@ -9,13 +9,20 @@ interface ExploreBookItemProps {
 export function ExploreBookItem({ book }: ExploreBookItemProps) {
   return (
     <div className="flex gap-3 w-[318px] bg-slate-800 rounded-lg p-5">
-      <Image src={book.cover_url} alt="" height={152} width={108} />
+      <Image
+        src={book.cover_url}
+        alt=""
+        height={152}
+        width={108}
+        priority
+        className="w-[108px] h-[152px]"
+      />
       <div className="flex flex-col justify-between">
         <div className="">
           <h1 className="font-bold text-gray-300">{book.name}</h1>
           <p className="text-gray-400">{book.author}</p>
         </div>
-        <Stars rating={book.rating} />
+        <Stars rating={book.averageRating} />
       </div>
     </div>
   )
