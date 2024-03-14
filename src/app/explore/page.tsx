@@ -27,7 +27,7 @@ export default function Explore() {
   useEffect(() => {
     getBooks()
   }, [])
-  
+
   async function getBooks() {
     const allBooks = await api.get('/api/books/get-all-books')
     setAllBooksState(allBooks.data.allBooks)

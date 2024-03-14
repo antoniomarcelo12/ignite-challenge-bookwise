@@ -49,8 +49,6 @@ export interface GetUserAvaliationsResponse {
   user_id: string
 }
 
-// ______________________________________________________________________________________
-
 export interface GetPopularBooksResponse {
   popularBooks: {
     bookId: string
