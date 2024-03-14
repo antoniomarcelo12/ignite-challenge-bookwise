@@ -1,14 +1,11 @@
 import { PopularBookInterface } from '@/interfaces/Book'
 
-export function SortPopularBooks(popularBooks: PopularBookInterface[]) {
-  return popularBooks.sort(function (a, b) {
+export function sortPopularBooks(popularBooks: PopularBookInterface[]) {
+  return popularBooks.sort((a, b) => {
     if (a.bookRatingsAmount === b.bookRatingsAmount) {
-      if (a.bookRatingAverage < b.bookRatingAverage) {
-        return 1
-      }
-      if (a.bookRatingAverage > b.bookRatingAverage) {
-        return -1
-      }
+      return b.bookRatingAverage - a.bookRatingAverage
+    } else {
+      return b.bookRatingsAmount - a.bookRatingsAmount
     }
   })
 }
