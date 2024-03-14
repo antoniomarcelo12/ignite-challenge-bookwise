@@ -1,25 +1,29 @@
 import Image from 'next/image'
-import book from '../../assets/book.png'
+import { PopularBookInterface } from '@/interfaces/Book'
+import { Stars } from '../components/Stars'
 
 interface PopularBooksItemProps {
-  popularBook: {
-    bookId: string
-    bookName: string
-    bookCover: string
-    bookAuthor: string
-    bookAmountAcc: number
-  }
+  popularBook: PopularBookInterface
 }
 
 export function PopularBooksItem({ popularBook }: PopularBooksItemProps) {
   return (
     <div className="flex gap-3 bg-slate-800 rounded-lg p-4">
-      <Image src={book} height={94} width={64} alt="" />
+      <Image
+        src={popularBook.bookCover}
+        height={94}
+        width={64}
+        alt=""
+        className="min-w-[64px] h-[94px]"
+      />
       <div className="flex flex-col justify-between">
         <div className="">
-          <h1 className="text-gray-100 font-bold">{popularBook.bookName}</h1>
+          <h1 className="text-gray-100 font-bold line-clamp-2">
+            {popularBook.bookName}
+          </h1>
           <p className="text-gray-400">{popularBook.bookAuthor}</p>
         </div>
+        <Stars rating={popularBook.bookRatingAverage} />
       </div>
     </div>
   )

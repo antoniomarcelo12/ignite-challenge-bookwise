@@ -79,3 +79,24 @@ export interface GetBookAvaliationResponse {
     }[]
   }
 }
+
+// ______________________________________________________________________________________
+
+export interface GetPopularBooksResponse {
+  popularBooks: {
+    bookId: string
+    bookName: string
+    bookCover: string
+    bookAuthor: string
+    bookRatingsAmount: number
+    bookRatingAverage: number
+  }[]
+}
+export interface PopularBookInterface {
+  bookId: string
+  bookName: string
+  bookCover: string
+  bookAuthor: string
+  bookRatingsAmount: number
+  bookRatingAverage: number
+}

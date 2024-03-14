@@ -2,19 +2,11 @@ import { CaretCircleRight } from 'phosphor-react'
 import { PopularBooksItem } from './PopularBooksItem'
 import { useEffect, useState } from 'react'
 import { api } from '@/lib/axios'
-
-interface PopularBooksResponse {
-  popularBooksParsed: {
-    bookId: string
-    bookName: string
-    bookCover: string
-    bookAuthor: string
-    bookAmountAcc: number
-  }[]
-}
+import { GetPopularBooksResponse } from '@/interfaces/Book'
+import Link from 'next/link'
 
 export function PopularBooks() {
-  const [popularBooks, setPopularBooks] = useState<PopularBooksResponse>([])
+  const [popularBooks, setPopularBooks] = useState<GetPopularBooksResponse>()
 
   async function getPopularBooks() {
     const response = await api.get('/api/books/get-popular-books')
@@ -28,19 +20,19 @@ export function PopularBooks() {
 
   return (
     <div className="w-[324px] mt-48">
-      <div className="flex justify-between mb-2 text-sm">
+      <div className="flex justify-between items-baseline mb-2 text-sm">
         <p className="mb-4">Livros populares</p>
-        <button className="flex text-xs items-center gap-2 leading-4 text-purple-500">
+        <Link
+          href="/explore"
+          className="flex text-xs items-center gap-2 leading-4 text-purple-500"
+        >
           Ver todos <CaretCircleRight size={16} weight="fill" />
-        </button>
+        </Link>
       </div>
       <div className="flex flex-col gap-3">
-        {popularBooks.popularBooksParsed &&
-          popularBooks.popularBooksParsed.map((book, idx) => {
-            if (idx < 5) {
-              return <PopularBooksItem key={book.bookId} popularBook={book} />
-            }
-            return null
+        {popularBooks &&
+          popularBooks.popularBooks.map((book) => {
+            return <PopularBooksItem key={book.bookId} popularBook={book} />
           })}
       </div>
     </div>

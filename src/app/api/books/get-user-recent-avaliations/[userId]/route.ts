@@ -1,11 +1,22 @@
 import { prisma } from '@/lib/prisma'
+import { NextApiRequest } from 'next'
 import { NextResponse } from 'next/server'
 
-export async function GET(request: Request) {
-  const url = request.url
-  const data = url.split('?')
-  const dataParsed = data[1].split('=')
-  const userId = dataParsed[1]
+export async function GET(
+  _request: NextApiRequest,
+  { params }: { params: { userId: string } },
+) {
+  const { userId } = params
+
+  const user = await prisma.user.findFirst({
+    where: {
+      id: userId,
+    },
+  })
+
+  if (!user) {
+    return NextResponse.json({ status: 404, message: 'User not found.' })
+  }
 
   const recentBookAvaliations = await prisma.rating.findMany({
     where: {

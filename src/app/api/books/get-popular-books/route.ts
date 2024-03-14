@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import { SortPopularBooks } from '@/utils/sort-popular-books'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
@@ -12,37 +13,49 @@ export async function GET() {
         book_id: 'desc',
       },
     },
+    take: 5,
   })
 
-  const array = []
+  const popularBooksWithInfo = []
 
   const books = await prisma.book.findMany({
-    select: {
-      author: true,
-      name: true,
-      cover_url: true,
-      summary: true,
-      id: true,
+    include: {
+      ratings: {
+        select: {
+          rate: true,
+        },
+      },
     },
   })
 
   for (let book = 0; book < books.length; book++) {
     for (let rating = 0; rating < popularBooks.length; rating++) {
+      const bookSumOfRatings = books[book].ratings.reduce(
+        (acc, rating) => acc + rating.rate,
+        0,
+      )
+
       if (popularBooks[rating].book_id === books[book].id) {
         const temp = {
           bookId: books[book].id,
           bookName: books[book].name,
           bookCover: books[book].cover_url,
           bookAuthor: books[book].author,
-          bookAmountAcc: popularBooks[rating]._count.book_id,
+          bookRatingsAmount: popularBooks[rating]._count.book_id,
+          bookRatingAverage: Math.floor(
+            bookSumOfRatings / popularBooks[rating]._count.book_id,
+          ),
         }
 
-        array.push(temp)
+        popularBooksWithInfo.push(temp)
       }
     }
   }
 
-  const popularBooksParsed = array
+  const sortedPopularBooksWithInfo = SortPopularBooks(popularBooksWithInfo)
 
-  return NextResponse.json({ popularBooksParsed }, { status: 200 })
+  return NextResponse.json(
+    { popularBooks: sortedPopularBooksWithInfo },
+    { status: 200 },
+  )
 }

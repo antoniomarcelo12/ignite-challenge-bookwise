@@ -4,11 +4,11 @@ import { ChartLineUp } from 'phosphor-react'
 import { RatingBookItem } from './RatingBookItem'
 import { PopularBooks } from './PopularBooks'
 import { useSession } from 'next-auth/react'
-import { ChevronRight, Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { api } from '@/lib/axios'
 import { GetRecentAvaliationsResponse } from '@/interfaces/Book'
-import Link from 'next/link'
+import { MyLastReviewTile } from './my-last-review-tile'
 
 export default function Home() {
   const session = useSession()
@@ -22,14 +22,17 @@ export default function Home() {
     const response = await api.get('/api/books/get-recent-avaliations')
     setRecentAvaliations(response.data.recentBookAvaliations)
   }
-
-  useEffect(() => {
+  function getMyLastAvaliation() {
     if (session.status === 'authenticated') {
       const myLastReview = recentAvaliations.find(
         (item) => item.user_id === session?.data?.user?.id,
       )
       setMyLastReview(myLastReview)
     }
+  }
+
+  useEffect(() => {
+    getMyLastAvaliation()
   }, [session, recentAvaliations])
 
   useEffect(() => {
@@ -53,17 +56,7 @@ export default function Home() {
           </h1>
         </div>
         {session.status === 'authenticated' && (
-          <div className="mt-14">
-            <div className="flex justify-between mb-5">
-              <p>Sua última leitura</p>
-              <Link href="/profile">
-                <button className="flex items-center gap-3">
-                  Ver todas <ChevronRight />
-                </button>
-              </Link>
-            </div>
-            <RatingBookItem bookAvaliation={myLastReview} isProfilePage />
-          </div>
+          <MyLastReviewTile myLastReview={myLastReview} />
         )}
         <div className="mt-14 space-y-3">
           <p className="mb-6">Avaliações mais recentes</p>

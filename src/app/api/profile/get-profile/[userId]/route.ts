@@ -1,19 +1,24 @@
 import { prisma } from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 
-export async function GET(request: Request) {
-  const url = request.url
+interface Params {
+  params: {
+    userId: string
+  }
+}
 
-  const data = url.split('get-profile/')
-
-  const dataParsed = data[1]
-  const userId = dataParsed
+export async function GET(_request: Request, { params }: Params) {
+  const { userId } = params
 
   const userData = await prisma.user.findFirst({
     where: {
       id: userId,
     },
   })
+
+  if (!userData) {
+    return NextResponse.json({ message: 'Usuário inválido ou não encontrado.' })
+  }
 
   const userRatings = await prisma.rating.findMany({
     where: {

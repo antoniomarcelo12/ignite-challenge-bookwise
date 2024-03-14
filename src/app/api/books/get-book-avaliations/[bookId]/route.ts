@@ -1,8 +1,22 @@
 import { prisma } from '@/lib/prisma'
+import { NextApiRequest } from 'next'
 import { NextResponse } from 'next/server'
 
-export async function GET(request: Request) {
-  const bookId = request.url.split('get-book-avaliations/')[1]
+export async function GET(
+  _request: NextApiRequest,
+  { params }: { params: { bookId: string } },
+) {
+  const { bookId } = params
+
+  const isThereABookWithThisId = await prisma.book.findFirst({
+    where: {
+      id: bookId,
+    },
+  })
+
+  if (!isThereABookWithThisId) {
+    return NextResponse.json({ status: 404, message: 'Livro não encontrado.' })
+  }
 
   const bookAvaliations = await prisma.rating.findMany({
     where: {
@@ -13,18 +27,9 @@ export async function GET(request: Request) {
         select: {
           name: true,
           image: true,
-          id: true,
         },
       },
-      book: {
-        include: {
-          categories: {
-            include: {
-              category: true,
-            },
-          },
-        },
-      },
+      book: true,
     },
     orderBy: {
       created_at: 'desc',
