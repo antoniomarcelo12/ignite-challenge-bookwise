@@ -1,9 +1,8 @@
 import { prisma } from '@/lib/prisma'
-import { NextApiRequest } from 'next'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(
-  _request: NextApiRequest,
+  _request: NextRequest,
   { params }: { params: { userId: string } },
 ) {
   const { userId } = params
