@@ -9,23 +9,13 @@ import { api } from '@/lib/axios'
 import { useEffect, useState } from 'react'
 import { GetUserAvaliationsResponse } from '@/interfaces/Book'
 import { ProfileSummary } from './profileSummary'
-
-export interface UserDataType {
-  userData: {
-    createdAt: string
-    id: string
-    image: string
-    name: string
-  }
-  totalPagesRead: number
-  booksRated: number
-}
+import { GetProfileResponse } from '@/interfaces/User'
 
 export default function Profile() {
   const session = useSession()
   const router = useRouter()
   const { userid } = useParams()
-  const [userData, setUserData] = useState<UserDataType>()
+  const [userData, setUserData] = useState<GetProfileResponse>()
   const [searchString, setSearchString] = useState('')
 
   const [userRatings, setUserRatings] = useState<GetUserAvaliationsResponse[]>(
@@ -46,6 +36,7 @@ export default function Profile() {
     )
     setUserRatings(response.data.recentBookAvaliations)
   }
+
   useEffect(() => {
     const newArray = userRatings.filter((rating) => {
       return rating.book.name.includes(searchString)
@@ -119,6 +110,8 @@ export default function Profile() {
             })}
         </div>
       </div>
+
+      <ProfileSummary userData={userData} />
 
       <ProfileSummary userData={userData} />
     </div>

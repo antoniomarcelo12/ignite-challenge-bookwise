@@ -1,13 +1,13 @@
 import Image from 'next/image'
 import { BookOpen, Bookmarks } from 'phosphor-react'
-import { UserDataType } from './page'
 import { getYear } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { api } from '@/lib/axios'
+import { GetProfileResponse } from '@/interfaces/User'
 
 interface ProfileSummaryProps {
-  userData: UserDataType | undefined
+  userData: GetProfileResponse | undefined
 }
 
 export function ProfileSummary({ userData }: ProfileSummaryProps) {
