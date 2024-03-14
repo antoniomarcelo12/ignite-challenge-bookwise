@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma'
-import { SortPopularBooks } from '@/utils/sort-popular-books'
+import { sortPopularBooks } from '@/utils/sort-popular-books'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
@@ -52,7 +52,7 @@ export async function GET() {
     }
   }
 
-  const sortedPopularBooksWithInfo = SortPopularBooks(popularBooksWithInfo)
+  const sortedPopularBooksWithInfo = sortPopularBooks(popularBooksWithInfo)
 
   return NextResponse.json(
     { popularBooks: sortedPopularBooksWithInfo },
