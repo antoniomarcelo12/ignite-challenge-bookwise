@@ -19,7 +19,7 @@ export function PopularBooks() {
   }, [])
 
   return (
-    <div className="w-[324px] mt-48">
+    <div className="w-[324px] mt-48 shadow-lg">
       <div className="flex justify-between items-baseline mb-2 text-sm">
         <p className="mb-4">Livros populares</p>
         <Link

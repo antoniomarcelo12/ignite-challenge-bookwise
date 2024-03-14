@@ -49,27 +49,6 @@ export interface GetUserAvaliationsResponse {
   user_id: string
 }
 
-export interface GetBookAvaliationResponse {
-  id: string
-  rate: number
-  description: string
-  created_at: string
-  book_id: string
-  user: {
-    image: string
-    name: string
-    id: string
-  }
-  book: {
-    categories: {
-      category: {
-        id: string
-        name: string
-      }
-    }[]
-  }
-}
-
 // ______________________________________________________________________________________
 
 export interface GetPopularBooksResponse {
@@ -89,4 +68,50 @@ export interface PopularBookInterface {
   bookAuthor: string
   bookRatingsAmount: number
   bookRatingAverage: number
+}
+
+export interface GetBookAvaliationResponse {
+  bookAvaliations: {
+    id: string
+    rate: number
+    description: string
+    created_at: string
+    book_id: string
+    user_id: string
+    user: {
+      name: string
+      image: string
+      id: string
+    }
+    book: {
+      categories: {
+        category: {
+          id: string
+          name: string
+        }
+      }[]
+    }
+  }[]
+}
+
+export interface BookAvaliation {
+  id: string
+  rate: number
+  description: string
+  created_at: string
+  book_id: string
+  user_id: string
+  user: {
+    name: string
+    image: string
+    id: string
+  }
+  book: {
+    categories: {
+      category: {
+        id: string
+        name: string
+      }
+    }[]
+  }
 }

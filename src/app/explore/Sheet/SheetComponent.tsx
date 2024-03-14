@@ -9,6 +9,7 @@ import { LoginDialog } from '../../components/LoginDialog'
 import { BookType, GetBookAvaliationResponse } from '@/interfaces/Book'
 import { api } from '@/lib/axios'
 import { useSession } from 'next-auth/react'
+import { SheetHeaderComponent } from './SheetHeader'
 
 interface SheetComponentProps {
   isSheetOpen: boolean
@@ -23,13 +24,13 @@ export function SheetComponent({
 }: SheetComponentProps) {
   const [isNewCommentBoxVisible, setIsNewCommentBoxVisible] = useState(false)
   const [isLoginDialogOpen, onLoginDialogOpenChange] = useState(false)
-  const [bookData, setBookData] = useState<GetBookAvaliationResponse[]>()
+  const [bookData, setBookData] = useState<GetBookAvaliationResponse>()
 
   async function getBookAvaliations() {
     const response = await api.get(
       `/api/books/get-book-avaliations/${selectedBook.id}`,
     )
-    setBookData(response.data.bookAvaliations)
+    setBookData(response.data)
   }
   useEffect(() => {
     if (isSheetOpen) {
@@ -47,9 +48,6 @@ export function SheetComponent({
       setIsNewCommentBoxVisible(true)
     }
   }
-  const categoriesConcatenedString = selectedBook.categoriesArray
-    .toString()
-    .replace(',', ', ')
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={onIsSheetOpenChange}>
@@ -57,46 +55,8 @@ export function SheetComponent({
         side="right"
         className="lg:max-w-[660px] py-14 px-10 overflow-auto"
       >
-        <SheetHeader className="bg-slate-800 rounded-md p-8">
-          <div className="flex gap-5 mb-8">
-            <Image
-              src={selectedBook.cover_url}
-              alt=""
-              height={242}
-              width={171}
-            />
-            <div className="flex flex-col justify-between">
-              <div className="py-4">
-                <h1 className="font-bold text-gray-100">{selectedBook.name}</h1>
-                <p className="text-gray-300 text-sm">{selectedBook.author}</p>
-              </div>
-              <div className="">
-                <Stars rating={selectedBook.averageRating} />
-                <p className="text-gray-400 text-xs mt-1">
-                  {bookData && bookData?.length > 1
-                    ? `${bookData?.length} avaliações`
-                    : `${bookData?.length} avaliação`}
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 border-t-[1px] border-appGreen100 pt-8 mt-0">
-            <div className="flex items-center mt-0 gap-4">
-              <Bookmark size={24} className="text-appGreen100" />
-              <div className="">
-                <p className="text-sm text-gray-300">Categoria</p>
-                <p className="font-bold">{categoriesConcatenedString}</p>
-              </div>
-            </div>
-            <div className="flex items-center mt-0 gap-4">
-              <BookOpen size={24} className="text-appGreen100" />
-              <div className="">
-                <p className="text-sm text-gray-300">Páginas</p>
-                <p className="font-bold">{selectedBook.total_pages}</p>
-              </div>
-            </div>
-          </div>
-        </SheetHeader>
+        <SheetHeaderComponent selectedBook={selectedBook} bookData={bookData} />
+
         <div className="mt-10">
           <div className="flex justify-between">
             <p className="text-sm">Avaliações</p>
@@ -115,7 +75,7 @@ export function SheetComponent({
             />
           )}
 
-          {bookData?.map((item, idx) => {
+          {bookData?.bookAvaliations.map((item, idx) => {
             return <CommentItem key={idx} selectedBookData={item} />
           })}
         </div>

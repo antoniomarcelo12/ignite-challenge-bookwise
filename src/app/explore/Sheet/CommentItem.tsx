@@ -1,11 +1,11 @@
 import Image from 'next/image'
 import { Stars } from '../../components/Stars'
-import { GetBookAvaliationResponse } from '@/interfaces/Book'
+import { BookAvaliation, GetBookAvaliationResponse } from '@/interfaces/Book'
 import { formatDistanceToNow } from 'date-fns'
 import Link from 'next/link'
 
 interface CommentItemProps {
-  selectedBookData: GetBookAvaliationResponse
+  selectedBookData: BookAvaliation
 }
 
 export function CommentItem({ selectedBookData }: CommentItemProps) {
@@ -24,7 +24,9 @@ export function CommentItem({ selectedBookData }: CommentItemProps) {
             </Link>
           </div>
           <div className="">
-            <h1 className="text-gray-100">{selectedBookData.user.name}</h1>
+            <Link href={`profile/${selectedBookData.user.id}`}>
+              <h1 className="text-gray-100">{selectedBookData.user.name}</h1>
+            </Link>
             <p className="text-gray-400">
               {formatDistanceToNow(selectedBookData.created_at)}
             </p>

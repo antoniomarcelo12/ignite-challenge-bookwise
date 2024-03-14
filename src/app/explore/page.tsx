@@ -11,18 +11,6 @@ import { Toggle } from './Toggle'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
 
-interface booksFilteredByCategoryData {
-  book: {
-    name: string
-    cover_url: string
-    author: string
-    summary: string
-  }
-  category: {
-    name: string
-  }
-}
-
 export default function Explore() {
   const session = useSession()
   const searchParams = useSearchParams()
@@ -39,6 +27,11 @@ export default function Explore() {
   useEffect(() => {
     getBooks()
   }, [])
+  
+  async function getBooks() {
+    const allBooks = await api.get('/api/books/get-all-books')
+    setAllBooksState(allBooks.data.allBooks)
+  }
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString())
@@ -57,27 +50,23 @@ export default function Explore() {
         }
       }
     }
-  }, [router])
+  }, [router, selectedBook, allBooksState, searchParams])
 
   useEffect(() => {
+    if (categoryFilter === '') {
+      setCategoryFilter('Tudo')
+    }
     const filteredBooks = allBooksState?.filter((book) =>
       book.categoriesArray.includes(categoryFilter),
     )
     setBooksFilteredByCategory(filteredBooks)
   }, [categoryFilter, allBooksState])
 
-  async function getBooks() {
-    const allBooks = await api.get('/api/books/get-all-books')
-    setAllBooksState(allBooks.data.allBooks)
-  }
-
   function handleSelectBook(book: BookType) {
     router.push(`/explore?bookId=${book.id}`)
   }
 
   function changeSheetVisibility(value: boolean) {
-    const params = new URLSearchParams(searchParams.toString())
-
     setIsSheetOpen(value)
 
     if (value === false) {
@@ -103,7 +92,10 @@ export default function Explore() {
         </div>
       </div>
       <div className="">
-        <Toggle changeCategoryFilter={setCategoryFilter} />
+        <Toggle
+          categoryFilter={categoryFilter}
+          changeCategoryFilter={setCategoryFilter}
+        />
         <div className="flex gap-3 mt-5 flex-wrap">
           {categoryFilter === 'Tudo' &&
             allBooksState?.map((book) => {

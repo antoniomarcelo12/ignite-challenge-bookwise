@@ -27,9 +27,9 @@ export async function GET(
         select: {
           name: true,
           image: true,
+          id: true,
         },
       },
-      book: true,
     },
     orderBy: {
       created_at: 'desc',

@@ -2,16 +2,23 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 
 interface ToggleProps {
   changeCategoryFilter: (cat: string) => void
+  categoryFilter: string
 }
 
-export function Toggle({ changeCategoryFilter }: ToggleProps) {
+export function Toggle({ changeCategoryFilter, categoryFilter }: ToggleProps) {
   return (
     <ToggleGroup
       onValueChange={changeCategoryFilter}
       type="single"
       defaultValue="Tudo"
     >
-      <ToggleGroupItem value="Tudo">Tudo</ToggleGroupItem>
+      <ToggleGroupItem
+        data-state={categoryFilter === 'Tudo' ? 'on' : 'off'}
+        aria-checked={categoryFilter === 'Tudo'}
+        value="Tudo"
+      >
+        Tudo
+      </ToggleGroupItem>
       <ToggleGroupItem value="Romance">Romance</ToggleGroupItem>
       <ToggleGroupItem value="Suspense">Suspense</ToggleGroupItem>
       <ToggleGroupItem value="Fábula">Fábula</ToggleGroupItem>

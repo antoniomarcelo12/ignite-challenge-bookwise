@@ -20,7 +20,7 @@ export function Sidebar() {
   return (
     <div
       id="sidebar"
-      className="w-56 min-w-56 bg-slate-800 rounded-xl flex flex-col items-center p-2"
+      className="w-56 min-w-56 bg-slate-800 rounded-xl flex flex-col items-center p-2 shadow-lg"
     >
       <h1 className="flex items-center mb-20 mt-5 gap-2">
         <Image src={logo} alt="" /> Bookwise
@@ -50,7 +50,7 @@ export function Sidebar() {
             alt=""
           />
           <Link
-            href={`/profile/${session.data.user.id}`}
+            href={`/profile/${session.data.user?.id}`}
             className="max-w-[60%] truncate text-sm"
           >
             {session.data.user?.name}
