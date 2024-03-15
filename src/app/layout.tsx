@@ -15,9 +15,9 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={cn(' bg-background font-sans antialiased dark')}>
+      <body className={cn('p-3 bg-background font-sans antialiased dark')}>
         <SessionWrapper>
-          <div className="p-3 flex max-w-screen h-screen gap-20">
+          <div className="flex-col flex lg:flex-row max-w-screen gap-20">
             {location !== '/login' && location !== '/' && <Sidebar />}
 
             {children}

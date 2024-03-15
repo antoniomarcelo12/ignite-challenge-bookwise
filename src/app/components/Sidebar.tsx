@@ -20,28 +20,29 @@ export function Sidebar() {
   return (
     <div
       id="sidebar"
-      className="w-56 min-w-56 bg-slate-800 rounded-xl flex flex-col items-center p-2 shadow-lg"
+      className="w-[calc(100vw - 12px)] gap-10 justify-between h-16 lg:h-[calc(100vh-20px)] lg:w-56 lg:min-w-56 bg-slate-800 rounded-xl flex lg:flex-col lg:items-center p-2 shadow-lg"
     >
-      <h1 className="flex items-center mb-20 mt-5 gap-2">
+      <h1 className="flex items-center lg:mb-20 lg:mt-5 gap-2">
         <Image src={logo} alt="" /> Bookwise
       </h1>
-      <div className="flex flex-col gap-3">
+
+      <div className="flex lg:flex-col gap-3">
         <Link href="/home" className="flex items-center gap-2 relative">
           {pathName === '/home' && (
-            <div className="h-full w-[3px] bg-slate-600 absolute top-0 -left-3" />
+            <div className="h-[3px] w-full bottom-0 left-0 right-0 lg:h-full lg:w-[3px] bg-slate-600 absolute lg:top-0 lg:-left-3" />
           )}
           <ChartBar /> Início
         </Link>
         <Link href="/explore" className="flex items-center gap-2 relative">
           {pathName === '/explore' && (
-            <div className="h-full w-[3px] bg-slate-600 absolute top-0 -left-3" />
+            <div className="h-[3px] w-full bottom-0 lg:h-full lg:w-[3px] bg-slate-600 absolute lg:top-0 lg:-left-3" />
           )}
           <Binoculars /> Explorar
         </Link>
       </div>
 
       {session.status === 'authenticated' && (
-        <div className="mt-auto flex justify-between items-center mb-4 px-2 w-full">
+        <div className="lg:mt-auto flex lg:justify-between items-center lg:mb-4 gap-3 px-2 lg:w-full">
           <Image
             className="rounded-full w-8 h-8 border-2 border-gray-100"
             src={session.data.user?.image ?? ''}
@@ -73,7 +74,6 @@ export function Sidebar() {
           <SignIn className="text-appGreen100" height={24} width={24} />
         </button>
       )}
-
       <LoginDialog
         label="Faça login para utilizar todas as nossas funcionalidades!"
         isLoginDialogOpen={isLoginDialogOpen}

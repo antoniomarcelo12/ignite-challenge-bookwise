@@ -11,6 +11,7 @@ export function Toggle({ changeCategoryFilter, categoryFilter }: ToggleProps) {
       onValueChange={changeCategoryFilter}
       type="single"
       defaultValue="Tudo"
+      className="max-w-full bg-red-300 overflow-auto left-0 flex lg:justify-center"
     >
       <ToggleGroupItem
         data-state={categoryFilter === 'Tudo' ? 'on' : 'off'}

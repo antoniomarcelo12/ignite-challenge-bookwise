@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 interface RatingBookItemProps {
   isProfilePage?: boolean
-  bookAvaliation?: GetRecentAvaliationsResponse
+  bookAvaliation: GetRecentAvaliationsResponse | undefined
 }
 
 export function RatingBookItem({

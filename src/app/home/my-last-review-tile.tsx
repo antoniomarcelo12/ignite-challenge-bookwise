@@ -10,6 +10,11 @@ interface MyLastReviewTileProps {
 
 export function MyLastReviewTile({ myLastReview }: MyLastReviewTileProps) {
   const session = useSession()
+
+  if (!myLastReview) {
+    return
+  }
+
   return (
     <div className="mt-14">
       <div className="flex justify-between items-baseline mb-5">

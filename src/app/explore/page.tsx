@@ -1,10 +1,10 @@
 'use client'
-import { Binoculars } from 'phosphor-react'
+import { Binoculars, Spinner, SpinnerGap } from 'phosphor-react'
 import { ExploreBookItem } from './ExploreBookItem'
 import { SheetComponent } from './Sheet/SheetComponent'
-import { Suspense, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { Loader2 } from 'lucide-react'
+import { Loader2, LoaderIcon } from 'lucide-react'
 import { api } from '@/lib/axios'
 import { BookType } from '@/interfaces/Book'
 import { Toggle } from './Toggle'
@@ -83,21 +83,19 @@ export default function Explore() {
   }
 
   return (
-    <Suspense>
-      <div className="w-[1327px]">
-        <div className="flex justify-between items-center">
-          <div className="mt-24">
-            <h1 className="mb-14 flex items-center text-gray-100 text-3xl gap-3 font-bold">
-              <Binoculars className="text-appGreen100" /> Explorar
-            </h1>
-          </div>
-        </div>
-        <div className="">
-          <Toggle
-            categoryFilter={categoryFilter}
-            changeCategoryFilter={setCategoryFilter}
-          />
-          <div className="flex gap-3 mt-5 flex-wrap">
+    <div className="">
+      <div className="lg:mt-24">
+        <h1 className="mb-14 flex items-center text-gray-100 text-3xl gap-3 font-bold">
+          <Binoculars className="text-appGreen100" /> Explorar
+        </h1>
+      </div>
+      <div className="w-full max-w-[calc(1366px - (1366px % 318px))]">
+        <Toggle
+          categoryFilter={categoryFilter}
+          changeCategoryFilter={setCategoryFilter}
+        />
+        {allBooksState ? (
+          <div className="w-screen justify-center lg:justify-start lg:w-[1366px] flex-row flex gap-3 mt-5 flex-wrap">
             {categoryFilter === 'Tudo' &&
               allBooksState?.map((book) => {
                 return (
@@ -116,15 +114,19 @@ export default function Explore() {
                 )
               })}
           </div>
-        </div>
-        {selectedBook && (
-          <SheetComponent
-            selectedBook={selectedBook}
-            isSheetOpen={isSheetOpen}
-            onIsSheetOpenChange={changeSheetVisibility}
-          />
+        ) : (
+          <div className="w-[1080px] h-[480px] flex justify-center items-center">
+            <Loader2 className="animate-spin size-14" />
+          </div>
         )}
       </div>
-    </Suspense>
+      {selectedBook && (
+        <SheetComponent
+          selectedBook={selectedBook}
+          isSheetOpen={isSheetOpen}
+          onIsSheetOpenChange={changeSheetVisibility}
+        />
+      )}
+    </div>
   )
 }

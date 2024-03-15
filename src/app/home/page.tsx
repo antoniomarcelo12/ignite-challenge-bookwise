@@ -47,6 +47,8 @@ export default function Home() {
     )
   }
 
+  console.log('My last review: ', myLastReview)
+
   return (
     <div className="flex gap-44">
       <div id="main" className="max-h-full">
@@ -60,11 +62,20 @@ export default function Home() {
         )}
         <div className="mt-14 space-y-3">
           <p className="mb-6">Avaliações mais recentes</p>
-          {recentAvaliations.map((avaliation) => {
-            return (
-              <RatingBookItem key={avaliation.id} bookAvaliation={avaliation} />
-            )
-          })}
+          {recentAvaliations.length === 0 ? (
+            <div className="bg-slate-800 w-[800px] rounded-md p-8 h-[200px] flex justify-center items-center">
+              <h1>Nenhuma avaliação para mostrar</h1>
+            </div>
+          ) : (
+            recentAvaliations.map((avaliation) => {
+              return (
+                <RatingBookItem
+                  key={avaliation.id}
+                  bookAvaliation={avaliation}
+                />
+              )
+            })
+          )}
         </div>
       </div>
       <PopularBooks />

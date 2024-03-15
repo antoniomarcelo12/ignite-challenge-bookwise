@@ -18,6 +18,10 @@ export function PopularBooks() {
     getPopularBooks()
   }, [])
 
+  if (popularBooks?.popularBooks.length === 0) {
+    return
+  }
+
   return (
     <div className="w-[324px] mt-48 shadow-lg">
       <div className="flex justify-between items-baseline mb-2 text-sm">
